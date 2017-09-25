@@ -34,12 +34,6 @@ open class FluctuateView : UIView {
     open weak var controlPoint : UIButton?
     private lazy var state: FluctuateViewState = .fullCovered
     
-    //FluctuateConetntViewで選択する
-    //FluctuateContentStylesでスタイル
-    //CoverViewが上
-    //
-    //Have a controll point
-    
     public override init(frame: CGRect){
         super.init(frame: frame)
         initialize()
@@ -72,10 +66,6 @@ open class FluctuateView : UIView {
     open func stateChange(_ state: FluctuateViewState){}
     
 }
-
-//extension FluctuateView : CoverViewDelegate {}
-
-//extension FluctuateView : ContentViewDelegate {}
 
 public protocol FluctuateCoverView {
     func setUnchor(_ y: CGFloat)
