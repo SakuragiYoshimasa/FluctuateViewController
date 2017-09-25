@@ -21,15 +21,27 @@ open class FluctuateViewController: UIViewController {
 }
 
 extension FluctuateViewController : FluctuateViewDataSource {
-    open func contentsCount() -> Int { return 1}
+    
+    open func contentsCount() -> Int { return 3}
+    
     open func fluctuateView(_ fluctuateView: FluctuateView, contentTitle index: Int) -> String {
-        return ""
+        return "\(index)"
     }
     open func fluctuateView(_ fluctuateView: FluctuateView, contentByIndex index: Int) -> UIViewController {
         
-        let vc = UIViewController()
-        vc.view.backgroundColor = UIColor.green        
-        return vc
+        switch index {
+        case 0:
+            return UIStoryboard(name: "FixedVCDemoVC", bundle: nil).instantiateInitialViewController()!
+            
+        case 1:
+            return UIStoryboard(name: "FixedScrollDemoVC", bundle: nil).instantiateInitialViewController()!
+            
+        case 2:
+            return UIStoryboard(name: "FullScrollDemoVC", bundle: nil).instantiateInitialViewController()!
+            
+        default:
+            return UIViewController()
+        }
     }
     
     open func fluctuateView(_ fluctuateView: FluctuateView, contentTypeByIndex index: Int) -> ContentViewType {
@@ -45,7 +57,6 @@ extension FluctuateViewController : FluctuateViewDataSource {
         vc.view.backgroundColor = UIColor.darkGray
         return vc
     }
-    
 }
 
 extension FluctuateViewController : FluctuateViewDelegate {

@@ -57,8 +57,8 @@ open class FluctuateView : UIView {
         switch state {
         case .fullCovered:
             UIView.animate(withDuration: 0.3, animations: {
-                self.coverUnchor = self.bounds.height / 3
-                self.contentOffset = self.bounds.height + 100
+                self.coverUnchor = self.bounds.height
+                self.contentOffset = self.bounds.height + 200
                 
                 self.cover?.setUnchor(self.coverUnchor)
                 self.content?.setOffset(self.contentOffset)
@@ -67,11 +67,12 @@ open class FluctuateView : UIView {
             break
         case .noContent:
             UIView.animate(withDuration: 0.3, animations: {
-                self.coverUnchor = self.bounds.height / 3
-                self.contentOffset = self.bounds.height / 3 + 200
+                self.coverUnchor = self.bounds.height / 4
+                self.contentOffset = self.bounds.height / 4 + 200
                 
                 self.cover?.setUnchor(self.coverUnchor)
                 self.content?.setOffset(self.contentOffset)
+                //self.content?.show(0)
             })
             break
         default:
@@ -89,15 +90,15 @@ open class FluctuateView : UIView {
         addSubview(cover!)
         
         content = ContentView(frame: self.frame)
+        content?.clearContents()
         content?.setOffset(contentOffset)
         content?.registerContent(content: (dataSource?.noContentView().view)!, type: .fixed)
-        for i in 0...(dataSource!.contentsCount()) {
+        for i in 0..<(dataSource!.contentsCount()) {
             content?.registerContent(content: (dataSource?.fluctuateView(self, contentByIndex: i).view)!,
                                      type: (dataSource?.fluctuateView(self, contentTypeByIndex: i))!)
         }
-        addSubview(content!)
         
-        //content?.show(1)
+        addSubview(content!)
     }
     
     open func clear(){
