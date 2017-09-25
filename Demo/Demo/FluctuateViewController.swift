@@ -35,7 +35,7 @@ extension FluctuateViewController : FluctuateViewDataSource {
     }
     
     open func contentView() -> ContentView {
-        return ContentView()
+        return ContentView(frame: self.view.frame)
     }
 }
 

@@ -20,18 +20,14 @@ public struct FluctuateViewStyles {}
 
 open class FluctuateView : UIView {
     
-    open var delegate: FluctuateViewDelegate? {
-        didSet {
-            
-        }
-    }
     open var dataSource: FluctuateViewDataSource? {
         didSet {
             guard let _ = dataSource else { return }
             self.update()
         }
     }
-    
+
+    open var delegate: FluctuateViewDelegate?
     open var cover: CoverView?
     open var content: ContentView?
     
@@ -58,13 +54,19 @@ open class FluctuateView : UIView {
     
     open func update(){
         clear()
+        
         cover = dataSource?.coverView()
         cover?.setUnchor(self.bounds.height / 2.0)
         addSubview(cover!)
+        
+        content = dataSource?.contentView()
+        content?.setOffset(self.bounds.height / 1.5)
+        addSubview(content!)
     }
     
     open func clear(){
         cover?.removeFromSuperview()
+        content?.removeFromSuperview()
     }
     
     open func stateChange(_ state: FluctuateViewState){}
@@ -79,7 +81,10 @@ public protocol FluctuateCoverView {
     func setUnchor(_ y: CGFloat)
 }
 
-public protocol FluctuateContentView {}
+public protocol FluctuateContentView {
+    func setOffset(_ y: CGFloat)
+    func contentType() -> ContentViewType
+}
 
 
 public protocol FluctuateViewDelegate : class {

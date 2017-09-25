@@ -16,12 +16,31 @@ public enum ContentViewType {
 
 
 
-open class ContentView : UIView, FluctuateContentView {
+open class ContentView : UIView {
     
     var type: ContentViewType = .fixed
     
+    override public init(frame: CGRect) {
+        super.init(frame: frame)
+        backgroundColor = UIColor.blue
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
 }
 
+extension ContentView : FluctuateContentView {
+    
+    final public func setOffset(_ y: CGFloat){
+        self.frame.origin = CGPoint(x: frame.minX, y: y)
+    }
+    
+    final public func contentType() -> ContentViewType {
+        return .fixed
+    }
+}
 
 
 public protocol ContentViewDataSource : class {}
