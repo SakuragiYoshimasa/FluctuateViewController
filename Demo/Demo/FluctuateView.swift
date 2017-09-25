@@ -12,8 +12,7 @@ public enum FluctuateViewState {
     case fullCovered
     case noContent
     case fixedContent
-    case scrollContent
-    case fullScrollContent
+    case fullContent
 }
 
 public struct FluctuateViewStyles {}
@@ -35,6 +34,7 @@ open class FluctuateView : UIView {
     
     open var coverUnchor: CGFloat!
     open var contentOffset: CGFloat!
+    open var buttons: [UIButton] = []
     
     public override init(frame: CGRect){
         super.init(frame: frame)
@@ -46,13 +46,13 @@ open class FluctuateView : UIView {
         initialize()
     }
     
-    open func initialize(){
+    fileprivate func initialize(){
         state = .fullCovered
         coverUnchor = self.bounds.height
         contentOffset = self.bounds.height + 100
     }
     
-    open func update(_ state: FluctuateViewState){
+    fileprivate func update(_ state: FluctuateViewState){
         self.state = state
         switch state {
         case .fullCovered:
@@ -62,6 +62,10 @@ open class FluctuateView : UIView {
                 
                 self.cover?.setUnchor(self.coverUnchor)
                 self.content?.setOffset(self.contentOffset)
+                
+                for i in 0..<(self.dataSource!.contentsCount()) {
+                    self.buttons[i].frame = CGRect(x: 50 + i * 50, y: Int(50 + self.coverUnchor), width: 60, height: 60)
+                }
             })
             
             break
@@ -72,7 +76,38 @@ open class FluctuateView : UIView {
                 
                 self.cover?.setUnchor(self.coverUnchor)
                 self.content?.setOffset(self.contentOffset)
-                //self.content?.show(0)
+                self.content?.show(0)
+                
+                for i in 0..<(self.dataSource!.contentsCount()) {
+                    self.buttons[i].frame = CGRect(x: 50 + i * 50, y: Int(50 + self.coverUnchor), width: 60, height: 60)
+                }
+            })
+            break
+        case .fixedContent:
+            UIView.animate(withDuration: 0.3, animations: {
+                self.coverUnchor = self.bounds.height / 8
+                self.contentOffset = self.bounds.height / 8 + 200
+                
+                self.cover?.setUnchor(self.coverUnchor)
+                self.content?.setOffset(self.contentOffset)
+                
+                for i in 0..<(self.dataSource!.contentsCount()) {
+                    self.buttons[i].frame = CGRect(x: 50 + i * 50, y: Int(50 + self.coverUnchor), width: 60, height: 60)
+                }
+            })
+            break
+            
+        case .fullContent:
+            UIView.animate(withDuration: 0.3, animations: {
+                self.coverUnchor = 50
+                self.contentOffset = 50
+                
+                self.cover?.setUnchor(self.coverUnchor)
+                self.content?.setOffset(self.contentOffset)
+                
+                for i in 0..<(self.dataSource!.contentsCount()) {
+                    self.buttons[i].frame = CGRect(x: 50 + i * 50, y: Int(self.coverUnchor - 120), width: 60, height: 60)
+                }
             })
             break
         default:
@@ -99,21 +134,44 @@ open class FluctuateView : UIView {
         }
         
         addSubview(content!)
+        makeButtons()
     }
     
-    open func clear(){
+    fileprivate func clear(){
+        buttons.forEach({ $0.removeFromSuperview() })
+        buttons = []
         cover?.removeFromSuperview()
         content?.removeFromSuperview()
+    }
+    
+    fileprivate func makeButtons(){
+        
+        for i in 0..<(dataSource!.contentsCount()) {
+            let button = UIButton(frame: CGRect(x: 50 + i * 50, y: Int(50 + coverUnchor), width: 60, height: 60))
+            button.tag = i + 1
+            button.backgroundColor = UIColor.cyan
+            button.setTitle("\(i)", for: .normal)
+            buttons.append(button)
+            button.addTarget(self, action: #selector(self.selectedContent(_:)), for: .touchUpInside)
+            addSubview(button)
+        }
+    }
+    
+    @objc fileprivate func selectedContent(_ sender: UIButton){
+        content?.show(sender.tag)
+        let contentType = dataSource!.fluctuateView(self, contentTypeByIndex: sender.tag - 1)
+        update(contentType == .fixed ? .fixedContent : .fullContent)
     }
 }
 
 extension FluctuateView : FluctuateCoverViewDelegate {
-    open func coverUp() {
+    
+    public func coverUp() {
         print("up")
         update(.noContent)
     }
     
-    open func coverDown() {
+    public func coverDown() {
         print("down")
         switch state {
         case .fullCovered:

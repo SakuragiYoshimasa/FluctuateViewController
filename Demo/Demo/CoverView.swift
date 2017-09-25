@@ -8,8 +8,6 @@
 
 import UIKit
 
-
-
 open class CoverView : UIView {
     
     open weak var delegate: FluctuateCoverViewDelegate?
@@ -20,10 +18,8 @@ open class CoverView : UIView {
         
         let swipeUpRecognizer = UISwipeGestureRecognizer(target:self, action:#selector(self.swipe(sender:)))
         swipeUpRecognizer.direction = .up
-        swipeUpRecognizer.delegate = self
         let swipeDownRecognizer = UISwipeGestureRecognizer(target:self, action:#selector(self.swipe(sender:)))
         swipeDownRecognizer.direction = .down
-        swipeDownRecognizer.delegate = self
         
         addGestureRecognizer(swipeUpRecognizer)
         addGestureRecognizer(swipeDownRecognizer)
@@ -52,24 +48,4 @@ extension CoverView : FluctuateCoverView {
     final public func setUnchor(_ y: CGFloat) {
         self.frame.origin = CGPoint(x: frame.minX, y: y - frame.size.height)
     }
-}
-
-
-extension CoverView : UIGestureRecognizerDelegate {
-    
-   // public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        /*if gestureRecognizer === self.gesture { // 特定のgestureのとき
-            // hogehoge
-        }
-        
-        if otherGestureRecognizer is UIPanGestureRecognizer { // 他方がPan(ドラッグ)Gestureのとき
-            // hogehoge
-        }
-        
-        if otherGestureRecognizer.view is UIScrollView { // 他方のGestureの親がUIScrollViewのとき
-            // hogehoge
-        }
-        return false*/
-   //     return true
-   // }
 }

@@ -45,7 +45,7 @@ extension FluctuateViewController : FluctuateViewDataSource {
     }
     
     open func fluctuateView(_ fluctuateView: FluctuateView, contentTypeByIndex index: Int) -> ContentViewType {
-        return .fixed
+        return index < 2 ? .fixed : .full
     }
     
     open func coverView() -> CoverView {
