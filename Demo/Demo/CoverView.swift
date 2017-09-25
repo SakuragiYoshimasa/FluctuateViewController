@@ -14,7 +14,6 @@ open class CoverView : UIView {
     
     open weak var delegate: FluctuateCoverViewDelegate?
     
-
     public override init(frame: CGRect){
         super.init(frame: frame)
         self.backgroundColor = UIColor.red
@@ -26,7 +25,6 @@ open class CoverView : UIView {
         
         addGestureRecognizer(swipeUpRecognizer)
         addGestureRecognizer(swipeDownRecognizer)
-        
     }
     
     required public init?(coder aDecoder: NSCoder) {

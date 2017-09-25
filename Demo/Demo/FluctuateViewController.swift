@@ -26,12 +26,26 @@ extension FluctuateViewController : FluctuateViewDataSource {
         return ""
     }
     open func fluctuateView(_ fluctuateView: FluctuateView, contentByIndex index: Int) -> UIViewController {
-        return UIViewController()
+        
+        let vc = UIViewController()
+        vc.view.backgroundColor = UIColor.green        
+        return vc
+    }
+    
+    open func fluctuateView(_ fluctuateView: FluctuateView, contentTypeByIndex index: Int) -> ContentViewType {
+        return .fixed
     }
     
     open func coverView() -> CoverView {
         return CoverView(frame: self.view.frame)
     }
+    
+    open func noContentView() -> UIViewController {
+        let vc = UIViewController()
+        vc.view.backgroundColor = UIColor.darkGray
+        return vc
+    }
+    
 }
 
 extension FluctuateViewController : FluctuateViewDelegate {

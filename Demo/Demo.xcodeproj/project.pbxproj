@@ -15,7 +15,7 @@
 		0655E0831F77A6A0007DD761 /* DemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0655E0821F77A6A0007DD761 /* DemoTests.swift */; };
 		0655E08E1F77BD54007DD761 /* FluctuateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0655E08D1F77BD54007DD761 /* FluctuateView.swift */; };
 		0655E0901F77CE21007DD761 /* CoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0655E08F1F77CE21007DD761 /* CoverView.swift */; };
-		0655E0921F77CE70007DD761 /* ConentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0655E0911F77CE70007DD761 /* ConentView.swift */; };
+		0655E0921F77CE70007DD761 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0655E0911F77CE70007DD761 /* ContentView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,7 +41,7 @@
 		0655E0841F77A6A0007DD761 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0655E08D1F77BD54007DD761 /* FluctuateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FluctuateView.swift; sourceTree = "<group>"; };
 		0655E08F1F77CE21007DD761 /* CoverView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoverView.swift; sourceTree = "<group>"; };
-		0655E0911F77CE70007DD761 /* ConentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConentView.swift; sourceTree = "<group>"; };
+		0655E0911F77CE70007DD761 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,7 +91,7 @@
 				0655E0791F77A6A0007DD761 /* Info.plist */,
 				0655E08D1F77BD54007DD761 /* FluctuateView.swift */,
 				0655E08F1F77CE21007DD761 /* CoverView.swift */,
-				0655E0911F77CE70007DD761 /* ConentView.swift */,
+				0655E0911F77CE70007DD761 /* ContentView.swift */,
 			);
 			path = Demo;
 			sourceTree = "<group>";
@@ -213,7 +213,7 @@
 				0655E0901F77CE21007DD761 /* CoverView.swift in Sources */,
 				0655E0701F77A6A0007DD761 /* FluctuateViewController.swift in Sources */,
 				0655E08E1F77BD54007DD761 /* FluctuateView.swift in Sources */,
-				0655E0921F77CE70007DD761 /* ConentView.swift in Sources */,
+				0655E0921F77CE70007DD761 /* ContentView.swift in Sources */,
 				0655E06E1F77A6A0007DD761 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -426,6 +426,7 @@
 				0655E0891F77A6A0007DD761 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		0655E08A1F77A6A0007DD761 /* Build configuration list for PBXNativeTarget "DemoTests" */ = {
 			isa = XCConfigurationList;
@@ -434,6 +435,7 @@
 				0655E08C1F77A6A0007DD761 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

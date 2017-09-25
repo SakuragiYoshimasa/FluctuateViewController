@@ -31,7 +31,7 @@ open class FluctuateView : UIView {
     open var cover: CoverView?
     open var content: ContentView?
     
-    private lazy var state: FluctuateViewState = .fullCovered
+    fileprivate lazy var state: FluctuateViewState = .fullCovered
     
     open var coverUnchor: CGFloat!
     open var contentOffset: CGFloat!
@@ -47,12 +47,37 @@ open class FluctuateView : UIView {
     }
     
     open func initialize(){
-        
-        coverUnchor = self.bounds.height / 2
-        contentOffset = self.bounds.height / 1.5
+        state = .fullCovered
+        coverUnchor = self.bounds.height
+        contentOffset = self.bounds.height + 100
     }
     
-    open func update(){}
+    open func update(_ state: FluctuateViewState){
+        self.state = state
+        switch state {
+        case .fullCovered:
+            UIView.animate(withDuration: 0.3, animations: {
+                self.coverUnchor = self.bounds.height / 3
+                self.contentOffset = self.bounds.height + 100
+                
+                self.cover?.setUnchor(self.coverUnchor)
+                self.content?.setOffset(self.contentOffset)
+            })
+            
+            break
+        case .noContent:
+            UIView.animate(withDuration: 0.3, animations: {
+                self.coverUnchor = self.bounds.height / 3
+                self.contentOffset = self.bounds.height / 3 + 200
+                
+                self.cover?.setUnchor(self.coverUnchor)
+                self.content?.setOffset(self.contentOffset)
+            })
+            break
+        default:
+            break
+        }
+    }
     
     open func updateData(){
         
@@ -65,25 +90,40 @@ open class FluctuateView : UIView {
         
         content = ContentView(frame: self.frame)
         content?.setOffset(contentOffset)
+        content?.registerContent(content: (dataSource?.noContentView().view)!, type: .fixed)
+        for i in 0...(dataSource!.contentsCount()) {
+            content?.registerContent(content: (dataSource?.fluctuateView(self, contentByIndex: i).view)!,
+                                     type: (dataSource?.fluctuateView(self, contentTypeByIndex: i))!)
+        }
         addSubview(content!)
+        
+        //content?.show(1)
     }
     
     open func clear(){
         cover?.removeFromSuperview()
         content?.removeFromSuperview()
     }
-    
-    open func stateChange(_ state: FluctuateViewState){}
-    
 }
 
 extension FluctuateView : FluctuateCoverViewDelegate {
     open func coverUp() {
         print("up")
+        update(.noContent)
     }
     
     open func coverDown() {
         print("down")
+        switch state {
+        case .fullCovered:
+            break
+        case .noContent:
+            update(.fullCovered)
+            break
+        default:
+            update(.noContent)
+            break
+        }
     }
 }
 
@@ -98,7 +138,10 @@ public protocol FluctuateCoverView : class {
 
 public protocol FluctuateContentView : class {
     func setOffset(_ y: CGFloat)
-    func contentType() -> ContentViewType
+    func registerContent(content: UIView, type: ContentViewType)
+    func clearContents()
+    func show(_ pageIndex: Int)
+    func getContentHeight(contentIndex: Int) -> CGFloat
 }
 
 
@@ -110,6 +153,8 @@ public protocol FluctuateViewDataSource : class {
     func contentsCount() -> Int
     func fluctuateView(_ fluctuateView: FluctuateView, contentTitle index: Int) -> String
     func fluctuateView(_ fluctuateView: FluctuateView, contentByIndex index: Int) -> UIViewController
+    func fluctuateView(_ fluctuateView: FluctuateView, contentTypeByIndex index: Int) -> ContentViewType
+    func noContentView() -> UIViewController
     func coverView() -> CoverView
 }
 
