@@ -149,6 +149,7 @@
 					0655E0461F77A645007DD761 = {
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = N74TUWGM43;
+						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 					};
 					0655E04F1F77A646007DD761 = {
@@ -324,6 +325,7 @@
 		0655E05C1F77A646007DD761 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = N74TUWGM43;
@@ -336,6 +338,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.sakuragi.FluctuateViewController;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -343,6 +346,7 @@
 		0655E05D1F77A646007DD761 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = N74TUWGM43;
@@ -402,6 +406,7 @@
 				0655E05D1F77A646007DD761 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		0655E05E1F77A646007DD761 /* Build configuration list for PBXNativeTarget "FluctuateViewControllerTests" */ = {
 			isa = XCConfigurationList;
@@ -410,6 +415,7 @@
 				0655E0601F77A646007DD761 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
