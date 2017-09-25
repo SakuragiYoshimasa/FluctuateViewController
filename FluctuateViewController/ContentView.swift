@@ -13,12 +13,12 @@ public enum ContentViewType {
     case full
 }
 
-open class ContentView : UIView {
+open class ContentView : UIView, FluctuateContentView {
     
     fileprivate lazy var contentCount: Int = 0
+    fileprivate lazy var contentIndex = 0
     fileprivate lazy var contents: [UIView] = []
     fileprivate lazy var types: [ContentViewType] = []
-    fileprivate lazy var contentIndex = 0
     fileprivate lazy var contentSize: CGSize = CGSize(width: 0, height: 0)
     
     fileprivate func reframe(){
@@ -35,12 +35,7 @@ open class ContentView : UIView {
         super.init(coder: aDecoder)
     }
     
-    func test(){
-        print("taped")
-    }
-}
-
-extension ContentView : FluctuateContentView {
+    //FluctuateContentView
     
     final public func setOffset(_ y: CGFloat){
         self.frame.origin = CGPoint(x: frame.minX, y: y)
@@ -55,19 +50,16 @@ extension ContentView : FluctuateContentView {
         reframe()
     }
     
-    open func clearContents(){
+    public func clearContents(){
         contentCount = 0
+        contentIndex = 0
         contents = []
         types = []
-        contentIndex = 0
         reframe()
     }
     
-    open func show(_ pageIndex: Int) {
+    public func show(_ pageIndex: Int) {
+        if pageIndex >= contentCount { return }
         frame.origin = CGPoint(x: -contentSize.width * CGFloat(pageIndex), y: frame.origin.y)
-    }
-    
-    open func getContentHeight(contentIndex: Int) -> CGFloat {
-        return types[contentIndex] == .full ? self.frame.height : 300
     }
 }
