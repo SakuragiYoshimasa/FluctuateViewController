@@ -10,15 +10,41 @@ import UIKit
 
 
 
-open class CoverView : UIView{
+open class CoverView : UIView {
+    
+    open weak var delegate: FluctuateCoverViewDelegate?
+    
 
     public override init(frame: CGRect){
         super.init(frame: frame)
         self.backgroundColor = UIColor.red
+        
+        let swipeUpRecognizer = UISwipeGestureRecognizer(target:self, action:#selector(self.swipe(sender:)))
+        swipeUpRecognizer.direction = .up
+        let swipeDownRecognizer = UISwipeGestureRecognizer(target:self, action:#selector(self.swipe(sender:)))
+        swipeDownRecognizer.direction = .down
+        
+        addGestureRecognizer(swipeUpRecognizer)
+        addGestureRecognizer(swipeDownRecognizer)
+        
     }
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+    }
+    
+    func swipe(sender:UISwipeGestureRecognizer) {
+        
+        switch(sender.direction){
+        case UISwipeGestureRecognizerDirection.up:
+            delegate?.coverUp()
+            break
+        case UISwipeGestureRecognizerDirection.down:
+            delegate?.coverDown()
+            break
+        default:
+            break
+        }
     }
 }
 

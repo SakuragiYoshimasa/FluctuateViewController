@@ -20,19 +20,21 @@ public struct FluctuateViewStyles {}
 
 open class FluctuateView : UIView {
     
-    open var dataSource: FluctuateViewDataSource? {
+    open weak var dataSource: FluctuateViewDataSource? {
         didSet {
             guard let _ = dataSource else { return }
-            self.update()
+            self.updateData()
         }
     }
 
-    open var delegate: FluctuateViewDelegate?
+    open weak var delegate: FluctuateViewDelegate?
     open var cover: CoverView?
     open var content: ContentView?
     
-    open weak var controlPoint : UIButton?
     private lazy var state: FluctuateViewState = .fullCovered
+    
+    open var coverUnchor: CGFloat!
+    open var contentOffset: CGFloat!
     
     public override init(frame: CGRect){
         super.init(frame: frame)
@@ -44,17 +46,25 @@ open class FluctuateView : UIView {
         initialize()
     }
     
-    open func initialize(){}
+    open func initialize(){
+        
+        coverUnchor = self.bounds.height / 2
+        contentOffset = self.bounds.height / 1.5
+    }
     
-    open func update(){
+    open func update(){}
+    
+    open func updateData(){
+        
         clear()
         
         cover = dataSource?.coverView()
-        cover?.setUnchor(self.bounds.height / 2.0)
+        cover?.setUnchor(coverUnchor)
+        cover?.delegate = self
         addSubview(cover!)
         
-        content = dataSource?.contentView()
-        content?.setOffset(self.bounds.height / 1.5)
+        content = ContentView(frame: self.frame)
+        content?.setOffset(contentOffset)
         addSubview(content!)
     }
     
@@ -67,11 +77,26 @@ open class FluctuateView : UIView {
     
 }
 
-public protocol FluctuateCoverView {
+extension FluctuateView : FluctuateCoverViewDelegate {
+    open func coverUp() {
+        print("up")
+    }
+    
+    open func coverDown() {
+        print("down")
+    }
+}
+
+public protocol FluctuateCoverViewDelegate : class {
+    func coverUp()
+    func coverDown()
+}
+
+public protocol FluctuateCoverView : class {
     func setUnchor(_ y: CGFloat)
 }
 
-public protocol FluctuateContentView {
+public protocol FluctuateContentView : class {
     func setOffset(_ y: CGFloat)
     func contentType() -> ContentViewType
 }
@@ -83,9 +108,8 @@ public protocol FluctuateViewDelegate : class {
 
 public protocol FluctuateViewDataSource : class {
     func contentsCount() -> Int
-    func fluctuateView(_ fluctuateView: FluctuateView, contentsTitle index: Int) -> String
-    func fluctuateView(_ fluctuateView: FluctuateView, viewController index: Int) -> UIViewController
+    func fluctuateView(_ fluctuateView: FluctuateView, contentTitle index: Int) -> String
+    func fluctuateView(_ fluctuateView: FluctuateView, contentByIndex index: Int) -> UIViewController
     func coverView() -> CoverView
-    func contentView() -> ContentView
 }
 
