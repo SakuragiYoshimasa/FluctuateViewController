@@ -135,6 +135,7 @@ open class FluctuateView : UIView {
                 break
             case .noContent:
                 self.menuOffset = self.propaties.menuOffsetOnNocontentMode
+                self.content?.show(0)
                 break
             case .fixedContent:
                 self.menuOffset = self.propaties.menuOffsetOnFixedContentMode

@@ -10,13 +10,13 @@ import UIKit
 
 class ViewController : FluctuateViewController {
     
-    open override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
+        //Setting propaties
         fluctuateView.setPropaties(propaties: FluctuateViewPropaties(animationDuration: 0.4, menuHeight: 300, offsetOnNocontent: 300, offsetOnFixedContent: 200, fullCoveredOffset: 60))
     }
     
     // FluctuateViewDataSource
-    
     override func contentsCount() -> Int { return 3 }
     
     override func fluctuateView(_ fluctuateView: FluctuateView, contentTitle index: Int) -> String {
