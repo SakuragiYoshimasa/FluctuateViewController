@@ -30,6 +30,7 @@ public protocol FluctuateMenuViewDelegate : class {
 
 public protocol FluctuateMenuView : class {
     func setOffset(_ y: CGFloat)
+    func recreateMenuViewByContents(dataSource: FluctuateViewDataSource)
 }
 
 public protocol FluctuateContentView : class {
@@ -54,6 +55,30 @@ public protocol FluctuateViewDataSource : class {
     func menuView() -> MenuView
 }
 
+public struct FluctuateViewPropaties {
+    public var duration: CGFloat
+    public var menuHeight: CGFloat
+    public var menuOffsetOnNocontentMode: CGFloat
+    public var menuOffsetOnFixedContentMode: CGFloat
+    public var fullCoveredOffset: CGFloat
+    
+    public init(animationDuration: CGFloat,
+                menuHeight: CGFloat,
+                offsetOnNocontent: CGFloat,
+                offsetOnFixedContent: CGFloat,
+                fullCoveredOffset: CGFloat ){
+        self.duration = animationDuration
+        self.menuHeight = menuHeight
+        self.menuOffsetOnNocontentMode = offsetOnNocontent
+        self.menuOffsetOnFixedContentMode = offsetOnFixedContent
+        self.fullCoveredOffset = fullCoveredOffset
+    }
+    
+    public static func defaultPropaties() -> FluctuateViewPropaties {
+        return FluctuateViewPropaties(animationDuration: 0.3, menuHeight: 100, offsetOnNocontent: 400, offsetOnFixedContent: 300, fullCoveredOffset: 100)
+    }
+}
+
 open class FluctuateView : UIView {
     
     open weak var dataSource: FluctuateViewDataSource? {
@@ -68,24 +93,35 @@ open class FluctuateView : UIView {
     open var cover: CoverView?
     open var menu: MenuView?
     open var content: ContentView?
-    open var menuOffset: CGFloat!
-    open var menuHeight: CGFloat!
+    fileprivate var menuOffset: CGFloat!
+    open var propaties: FluctuateViewPropaties
     open var buttons: [UIButton] = []
     
+    public convenience init(frame: CGRect, propaties: FluctuateViewPropaties) {
+        self.init(frame: frame)
+        self.propaties = propaties
+        initialize()
+    }
+    
     public override init(frame: CGRect){
+        propaties = .defaultPropaties()
         super.init(frame: frame)
         initialize()
     }
     
     required public init?(coder aDecoder: NSCoder) {
+        propaties = .defaultPropaties()
         super.init(coder: aDecoder)
         initialize()
+    }
+    
+    public func setPropaties(propaties: FluctuateViewPropaties){
+        self.propaties = propaties
     }
     
     fileprivate func initialize(){
         state = .fullCovered
         menuOffset = self.bounds.height
-        menuHeight = 100
     }
     
     fileprivate func update(_ state: FluctuateViewState){
@@ -98,19 +134,19 @@ open class FluctuateView : UIView {
                 self.menuOffset = self.frame.height
                 break
             case .noContent:
-                self.menuOffset = 400
+                self.menuOffset = self.propaties.menuOffsetOnNocontentMode
                 break
             case .fixedContent:
-                self.menuOffset = 250
+                self.menuOffset = self.propaties.menuOffsetOnFixedContentMode
                 break
             case .fullContent:
-                self.menuOffset = -self.menuOffset
+                self.menuOffset = -self.propaties.menuHeight
                 break
             }
             
-            self.cover?.setUnchor(self.menuOffset)
+            self.cover?.setUnchor(state != .fullContent ? self.menuOffset : self.propaties.fullCoveredOffset)
             self.menu?.setOffset(self.menuOffset)
-            self.content?.setOffset(self.menuOffset + self.menuHeight)
+            self.content?.setOffset(self.menuOffset + self.propaties.menuHeight)
         })
         delegate?.onStateChage(state)
     }
@@ -119,31 +155,33 @@ open class FluctuateView : UIView {
         
         clear()
         
-        cover = dataSource?.coverView()
-        cover?.setUnchor(menuOffset)
-        cover?.delegate = self
-        addSubview(cover!)
-        
         menu = dataSource?.menuView()
         menu?.setOffset(menuOffset)
         menu?.delegate = self
+        menu?.recreateMenuViewByContents(dataSource: self.dataSource!)
         addSubview(menu!)
         
         content = ContentView(frame: self.frame)
         content?.clearContents()
-        content?.setOffset(menuOffset + menuHeight)
+        content?.setOffset(menuOffset + propaties.menuHeight)
         content?.registerContent(content: (dataSource?.noContentView().view)!, type: .fixed)
         for i in 0..<(dataSource!.contentsCount()) {
             content?.registerContent(content: (dataSource?.fluctuateView(self, contentByIndex: i).view)!,
                                      type: (dataSource?.fluctuateView(self, contentTypeByIndex: i))!)
         }
         addSubview(content!)
+        
+        cover = dataSource?.coverView()
+        cover?.setUnchor(menuOffset)
+        cover?.delegate = self
+        addSubview(cover!)
     }
     
     fileprivate func clear(){
         buttons.forEach({ $0.removeFromSuperview() })
         buttons = []
         cover?.removeFromSuperview()
+        menu?.removeFromSuperview()
         content?.removeFromSuperview()
     }
     
@@ -176,8 +214,8 @@ extension FluctuateView : FluctuateCoverViewDelegate {
 
 extension FluctuateView : FluctuateMenuViewDelegate {
     public func selectContent(_ contentIndex: Int) {
-        if contentIndex >= dataSource!.contentsCount() { return }
+        if contentIndex > dataSource!.contentsCount() { return }
         content?.show(contentIndex)
-        update(dataSource!.fluctuateView(self, contentTypeByIndex: contentIndex) == .fixed ? .fixedContent : .fullContent)
+        update(dataSource!.fluctuateView(self, contentTypeByIndex: contentIndex - 1) == .fixed ? .fixedContent : .fullContent)
     }
 }

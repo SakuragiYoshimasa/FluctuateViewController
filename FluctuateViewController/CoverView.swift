@@ -37,11 +37,11 @@ open class CoverView : UIView, FluctuateCoverView {
         }
     }
     
-    //FluctuateCoverView
-    
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
+    
+    //FluctuateCoverView
     
     final public func setUnchor(_ y: CGFloat) {
         self.frame.origin = CGPoint(x: frame.minX, y: y - frame.size.height)

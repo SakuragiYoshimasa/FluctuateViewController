@@ -9,7 +9,14 @@
 import UIKit
 
 class ViewController : FluctuateViewController {
-   
+    
+    open override func viewDidLoad() {
+        super.viewDidLoad()
+        fluctuateView.setPropaties(propaties: FluctuateViewPropaties(animationDuration: 0.4, menuHeight: 300, offsetOnNocontent: 300, offsetOnFixedContent: 200, fullCoveredOffset: 60))
+    }
+    
+    // FluctuateViewDataSource
+    
     override func contentsCount() -> Int { return 3 }
     
     override func fluctuateView(_ fluctuateView: FluctuateView, contentTitle index: Int) -> String {
@@ -39,7 +46,7 @@ class ViewController : FluctuateViewController {
     }
     
     override func menuView() -> MenuView {
-        return CustomMenuView()
+        return CustomMenuView(frame: self.view.frame)
     }
     
     override func noContentView() -> UIViewController {
@@ -47,7 +54,7 @@ class ViewController : FluctuateViewController {
         vc.view.backgroundColor = UIColor.darkGray
         return vc
     }
-    
+    // FluctuateViewDelegate
     override func onStateChage(_ state: FluctuateViewState){
         print("\(state)")
     }

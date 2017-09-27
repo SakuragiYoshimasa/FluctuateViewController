@@ -25,4 +25,5 @@ open class MenuView : UIView, FluctuateMenuView {
     final public func setOffset(_ y: CGFloat){
         self.frame.origin = CGPoint(x: frame.minX, y: y)
     }
+    open func recreateMenuViewByContents(dataSource: FluctuateViewDataSource){}
 }
