@@ -39,7 +39,7 @@ To use effectively iPad's high screen, the manipulation is done mainly by swipe 
 ### CocoaPods
 
 ```
-pod install FluctuateViewController
+pod 'FluctuateViewController'
 ```
 
 ### Carthage
