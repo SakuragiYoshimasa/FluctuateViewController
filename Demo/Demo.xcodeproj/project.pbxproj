@@ -12,6 +12,7 @@
 		0655E0751F77A6A0007DD761 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0655E0741F77A6A0007DD761 /* Assets.xcassets */; };
 		0655E0781F77A6A0007DD761 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0655E0761F77A6A0007DD761 /* LaunchScreen.storyboard */; };
 		0655E0831F77A6A0007DD761 /* DemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0655E0821F77A6A0007DD761 /* DemoTests.swift */; };
+		0670A00F1F7DE15C00223A37 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0670A00E1F7DE15C00223A37 /* Utility.swift */; };
 		067BAA6E1F79947B00DA7FCA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067BAA671F79947B00DA7FCA /* ContentView.swift */; };
 		067BAA6F1F79947B00DA7FCA /* CoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067BAA681F79947B00DA7FCA /* CoverView.swift */; };
 		067BAA701F79947B00DA7FCA /* FluctuateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067BAA691F79947B00DA7FCA /* FluctuateView.swift */; };
@@ -49,6 +50,7 @@
 		0655E07E1F77A6A0007DD761 /* DemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0655E0821F77A6A0007DD761 /* DemoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoTests.swift; sourceTree = "<group>"; };
 		0655E0841F77A6A0007DD761 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0670A00E1F7DE15C00223A37 /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 		067BAA671F79947B00DA7FCA /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		067BAA681F79947B00DA7FCA /* CoverView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoverView.swift; sourceTree = "<group>"; };
 		067BAA691F79947B00DA7FCA /* FluctuateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FluctuateView.swift; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 				067BAA681F79947B00DA7FCA /* CoverView.swift */,
 				067BAA6D1F79947B00DA7FCA /* MenuView.swift */,
 				067BAA671F79947B00DA7FCA /* ContentView.swift */,
+				0670A00E1F7DE15C00223A37 /* Utility.swift */,
 			);
 			name = FluctuateViewController;
 			path = ../FluctuateViewController;
@@ -277,6 +280,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0670A00F1F7DE15C00223A37 /* Utility.swift in Sources */,
 				067BAA711F79947B00DA7FCA /* FluctuateViewController.swift in Sources */,
 				067BAA731F79947B00DA7FCA /* MenuView.swift in Sources */,
 				067BAA791F799A6800DA7FCA /* CustomMenuView.swift in Sources */,

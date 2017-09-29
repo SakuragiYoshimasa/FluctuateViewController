@@ -22,7 +22,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView autoresizesSubviews="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LFB-8U-ZrM">
+                            <scrollView hidden="YES" autoresizesSubviews="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LFB-8U-ZrM">
                                 <rect key="frame" x="0.0" y="0.0" width="768" height="253"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yhj-1B-bCD">
@@ -53,7 +53,7 @@
                                 </constraints>
                             </scrollView>
                         </subviews>
-                        <color key="backgroundColor" red="0.50817104225754206" green="0.57342208138285478" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <color key="backgroundColor" red="0.20000000000000001" green="0.19215686274509802" blue="0.2196078431372549" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
                             <constraint firstItem="4aL-Bj-e38" firstAttribute="top" secondItem="LFB-8U-ZrM" secondAttribute="bottom" constant="771" id="AOm-kA-DaT"/>
                             <constraint firstItem="LFB-8U-ZrM" firstAttribute="leading" secondItem="KsJ-cy-2Z0" secondAttribute="leading" id="Ad5-IZ-Hgi"/>

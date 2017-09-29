@@ -37,13 +37,13 @@ Home view is covered by 'CoverView' to show the title or some purpose of the app
 To use effectively iPad's high screen, the manipulation is done mainly by swipe up and down.
 ## Installation and Setup
 ### CocoaPods
-Add your Podfile
+
 ```
 pod install FluctuateViewController
 ```
 
 ### Carthage
-Add your Cartfile
+
 ```
 github "SakuragiYoshimasa/FluctuateViewController"
 ```
@@ -55,7 +55,7 @@ To use your custom menu view or cover view, inherit "MenuView" and "CoverView". 
 
 ### Basic setting
 
-```
+```swift
 override func viewDidLoad() {
     super.viewDidLoad()
     //Setting propaties
@@ -66,7 +66,7 @@ override func viewDidLoad() {
 
 ### DataSource
 
-```
+```swift
 // FluctuateViewDataSource
     override func contentsCount() -> Int { return 3 }
 
@@ -109,7 +109,7 @@ override func viewDidLoad() {
 
 ### Delegate
 
-```
+```swift
 // FluctuateViewDelegate
     override func onStateChage(_ state: FluctuateViewState){
         print("\(state)")
@@ -121,7 +121,7 @@ override func viewDidLoad() {
 
 Like this, your custom menu view need to inherit "MenuView" and override recreateMenuViewByContents and call select(contentIndex: Int) according to your situations.
 
-```
+```swift
   class CustomMenuView : MenuView {
 
     var buttons: [UIButton] = []

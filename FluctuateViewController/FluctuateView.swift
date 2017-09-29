@@ -126,6 +126,7 @@ open class FluctuateView : UIView {
     
     fileprivate func update(_ state: FluctuateViewState){
         self.state = state
+        if state == .noContent { self.content?.show(0) }
         
         UIView.animate(withDuration: 0.3, animations: {
             
@@ -135,7 +136,6 @@ open class FluctuateView : UIView {
                 break
             case .noContent:
                 self.menuOffset = self.propaties.menuOffsetOnNocontentMode
-                self.content?.show(0)
                 break
             case .fixedContent:
                 self.menuOffset = self.propaties.menuOffsetOnFixedContentMode

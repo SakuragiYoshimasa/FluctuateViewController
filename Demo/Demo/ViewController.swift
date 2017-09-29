@@ -51,7 +51,7 @@ class ViewController : FluctuateViewController {
     
     override func noContentView() -> UIViewController {
         let vc = UIViewController()
-        vc.view.backgroundColor = UIColor.darkGray
+        vc.view.backgroundColor = UIColor.colorWithHexString(hex: "000103")
         return vc
     }
     // FluctuateViewDelegate
