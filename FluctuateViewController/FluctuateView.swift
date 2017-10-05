@@ -128,27 +128,51 @@ open class FluctuateView : UIView {
         self.state = state
         if state == .noContent { self.content?.show(0) }
         
-        UIView.animate(withDuration: 0.3, animations: {
+        switch state {
+        case .fullCovered:
+            self.menuOffset = self.frame.height
+            UIView.animate(withDuration: TimeInterval(propaties.duration), animations: {
+                
+                self.cover?.setUnchor(state != .fullContent ? self.menuOffset : self.propaties.fullCoveredOffset)
+                self.menu?.setOffset(self.menuOffset)
+                self.content?.setOffset(self.frame.height)
+            })
+            break
+        case .noContent:
+            self.menuOffset = self.propaties.menuOffsetOnNocontentMode
+            UIView.animate(withDuration: TimeInterval(propaties.duration), animations: {
+                
+                self.cover?.setUnchor(state != .fullContent ? self.menuOffset : self.propaties.fullCoveredOffset)
+                self.menu?.setOffset(self.menuOffset)
+                //self.content?.setOffset(self.menuOffset + self.propaties.menuHeight)
+                self.content?.setOffset(self.frame.height)
+            })
             
-            switch state {
-            case .fullCovered:
-                self.menuOffset = self.frame.height
-                break
-            case .noContent:
-                self.menuOffset = self.propaties.menuOffsetOnNocontentMode
-                break
-            case .fixedContent:
+            break
+        case .fixedContent:
+            self.menuOffset = self.propaties.menuOffsetOnNocontentMode
+            UIView.animate(withDuration: TimeInterval(propaties.duration), animations: {
+                self.content?.setOffset(self.menuOffset + self.propaties.menuHeight)
+            }, completion: { finished in
                 self.menuOffset = self.propaties.menuOffsetOnFixedContentMode
-                break
-            case .fullContent:
-                self.menuOffset = -self.propaties.menuHeight
-                break
-            }
+                UIView.animate(withDuration: TimeInterval(self.propaties.duration), animations: {
+                    self.cover?.setUnchor(state != .fullContent ? self.menuOffset : self.propaties.fullCoveredOffset)
+                    self.menu?.setOffset(self.menuOffset)
+                    self.content?.setOffset(self.menuOffset + self.propaties.menuHeight)
+                })
+            })
             
-            self.cover?.setUnchor(state != .fullContent ? self.menuOffset : self.propaties.fullCoveredOffset)
-            self.menu?.setOffset(self.menuOffset)
-            self.content?.setOffset(self.menuOffset + self.propaties.menuHeight)
-        })
+            break
+        case .fullContent:
+            self.menuOffset = -self.propaties.menuHeight
+            UIView.animate(withDuration: TimeInterval(propaties.duration), animations: {
+                
+                self.cover?.setUnchor(state != .fullContent ? self.menuOffset : self.propaties.fullCoveredOffset)
+                self.menu?.setOffset(self.menuOffset)
+                self.content?.setOffset(self.menuOffset + self.propaties.menuHeight)
+            })
+            break
+        }
         delegate?.onStateChage(state)
     }
     
@@ -165,7 +189,7 @@ open class FluctuateView : UIView {
         content = ContentView(frame: self.frame)
         content?.clearContents()
         content?.setOffset(menuOffset + propaties.menuHeight)
-        content?.registerContent(content: (dataSource?.noContentView().view)!, type: .fixed)
+        //content?.registerContent(content: (dataSource?.noContentView().view)!, type: .fixed)
         for i in 0..<(dataSource!.contentsCount()) {
             content?.registerContent(content: (dataSource?.fluctuateView(self, contentByIndex: i).view)!,
                                      type: (dataSource?.fluctuateView(self, contentTypeByIndex: i))!)
@@ -188,16 +212,14 @@ open class FluctuateView : UIView {
     
     @objc fileprivate func selectedContent(_ sender: UIButton){
         content?.show(sender.tag)
-        let contentType = dataSource!.fluctuateView(self, contentTypeByIndex: sender.tag - 1)
+        let contentType = dataSource!.fluctuateView(self, contentTypeByIndex: sender.tag)
         update(contentType == .fixed ? .fixedContent : .fullContent)
     }
 }
 
 extension FluctuateView : FluctuateCoverViewDelegate {
     
-    public func coverUp() {
-        update(.noContent)
-    }
+    public func coverUp() { update(.noContent) }
     
     public func coverDown() {
         switch state {
@@ -217,6 +239,6 @@ extension FluctuateView : FluctuateMenuViewDelegate {
     public func selectContent(_ contentIndex: Int) {
         if contentIndex > dataSource!.contentsCount() { return }
         content?.show(contentIndex)
-        update(dataSource!.fluctuateView(self, contentTypeByIndex: contentIndex - 1) == .fixed ? .fixedContent : .fullContent)
+        update(dataSource!.fluctuateView(self, contentTypeByIndex: contentIndex) == .fixed ? .fixedContent : .fullContent)
     }
 }

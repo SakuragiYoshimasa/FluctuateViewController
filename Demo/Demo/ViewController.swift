@@ -13,7 +13,7 @@ class ViewController : FluctuateViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         //Setting propaties
-        fluctuateView.setPropaties(propaties: FluctuateViewPropaties(animationDuration: 0.4, menuHeight: 300, offsetOnNocontent: 300, offsetOnFixedContent: 200, fullCoveredOffset: 60))
+        fluctuateView.setPropaties(propaties: FluctuateViewPropaties(animationDuration: 0.4, menuHeight: 200, offsetOnNocontent: 400, offsetOnFixedContent: 80, fullCoveredOffset: 60))
     }
     
     // FluctuateViewDataSource

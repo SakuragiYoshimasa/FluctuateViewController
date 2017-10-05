@@ -17,7 +17,7 @@ class CustomMenuView : MenuView {
         buttons.forEach({ $0.removeFromSuperview() })
         buttons = []
         
-        for i in 1...dataSource.contentsCount() {
+        for i in 0..<dataSource.contentsCount() {
             let button = UIButton(frame: CGRect(x: i * 120 + 100,y: 100, width: 100, height: 60))
             button.backgroundColor = UIColor.colorWithHexString(hex: "000103")
             button.setTitleColor(UIColor.colorWithHexString(hex: "DD2D4A"), for: .normal)
