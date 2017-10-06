@@ -28,6 +28,7 @@
 		0691D3331F7938C5008F08A1 /* 02.png in Resources */ = {isa = PBXBuildFile; fileRef = 0691D3321F7938C5008F08A1 /* 02.png */; };
 		0691D3351F7938CC008F08A1 /* 01.png in Resources */ = {isa = PBXBuildFile; fileRef = 0691D3341F7938CC008F08A1 /* 01.png */; };
 		0691D3371F7938F0008F08A1 /* 07.png in Resources */ = {isa = PBXBuildFile; fileRef = 0691D3361F7938F0008F08A1 /* 07.png */; };
+		06BE5DB91F865758001C5757 /* NoContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BE5DB81F865758001C5757 /* NoContentView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +68,7 @@
 		0691D3321F7938C5008F08A1 /* 02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 02.png; path = "../../../../UnityProjects/キャプチャ/Gifs/02.png"; sourceTree = "<group>"; };
 		0691D3341F7938CC008F08A1 /* 01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 01.png; path = "../../../../UnityProjects/キャプチャ/Gifs/01.png"; sourceTree = "<group>"; };
 		0691D3361F7938F0008F08A1 /* 07.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 07.png; path = ../../../../UnityProjects/experiment_Unity/gifMake/07.png; sourceTree = "<group>"; };
+		06BE5DB81F865758001C5757 /* NoContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoContentView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +144,7 @@
 				067BAA681F79947B00DA7FCA /* CoverView.swift */,
 				067BAA6D1F79947B00DA7FCA /* MenuView.swift */,
 				067BAA671F79947B00DA7FCA /* ContentView.swift */,
+				06BE5DB81F865758001C5757 /* NoContentView.swift */,
 				0670A00E1F7DE15C00223A37 /* Utility.swift */,
 			);
 			name = FluctuateViewController;
@@ -280,6 +283,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				06BE5DB91F865758001C5757 /* NoContentView.swift in Sources */,
 				0670A00F1F7DE15C00223A37 /* Utility.swift in Sources */,
 				067BAA711F79947B00DA7FCA /* FluctuateViewController.swift in Sources */,
 				067BAA731F79947B00DA7FCA /* MenuView.swift in Sources */,

@@ -13,7 +13,7 @@ class ViewController : FluctuateViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         //Setting propaties
-        fluctuateView.setPropaties(propaties: FluctuateViewPropaties(animationDuration: 0.4, menuHeight: 200, offsetOnNocontent: 400, offsetOnFixedContent: 80, fullCoveredOffset: 60))
+        fluctuateView.setPropaties(propaties: FluctuateViewPropaties(animationDuration: 0.4, menuHeight: 200, offsetOnNocontent: 400, offsetOnFixedContent: 60, fullCoveredOffset: 60))
     }
     
     // FluctuateViewDataSource
@@ -46,13 +46,13 @@ class ViewController : FluctuateViewController {
     }
     
     override func menuView() -> MenuView {
-        return CustomMenuView(frame: self.view.frame)
+        return CustomMenuView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200))
     }
     
-    override func noContentView() -> UIViewController {
-        let vc = UIViewController()
-        vc.view.backgroundColor = UIColor.colorWithHexString(hex: "000103")
-        return vc
+    override func noContentView() -> NoContentView {
+        let nocontent = NoContentView(frame: self.view.frame)
+        nocontent.backgroundColor = UIColor.brown
+        return nocontent
     }
     // FluctuateViewDelegate
     override func onStateChage(_ state: FluctuateViewState){

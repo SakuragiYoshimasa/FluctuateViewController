@@ -37,8 +37,12 @@ open class ContentView : UIView, FluctuateContentView {
     
     //FluctuateContentView
     
+    final public func setOffset(_ x: CGFloat ,_ y: CGFloat){
+        self.frame.origin = CGPoint(x: x - contentSize.width * CGFloat(contentIndex), y: y)
+    }
+    
     final public func setOffset(_ y: CGFloat){
-        self.frame.origin = CGPoint(x: frame.minX, y: y)
+        self.frame.origin = CGPoint(x: -contentSize.width * CGFloat(contentIndex), y: y)
     }
     
     open func registerContent(content: UIView, type: ContentViewType){
@@ -61,5 +65,6 @@ open class ContentView : UIView, FluctuateContentView {
     public func show(_ pageIndex: Int) {
         if pageIndex >= contentCount { return }
         frame.origin = CGPoint(x: -contentSize.width * CGFloat(pageIndex), y: frame.origin.y)
+        contentIndex = pageIndex
     }
 }
