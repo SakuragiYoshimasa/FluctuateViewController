@@ -22,6 +22,7 @@ public protocol FluctuateCoverViewDelegate : class {
 
 public protocol FluctuateCoverView : class {
     func setUnchor(_ y: CGFloat)
+    func setUnchor(withOffsetX x: CGFloat, _ y: CGFloat)
 }
 
 public protocol FluctuateNoContentView : class {
@@ -46,6 +47,9 @@ public protocol FluctuateContentView : class {
     func show(_ pageIndex: Int)
 }
 
+public protocol FluctuateContentViewDelegate : class {
+    func backToNoContent()
+}
 
 public protocol FluctuateViewDelegate : class {
     func onStateChage(_ state: FluctuateViewState)
@@ -144,6 +148,7 @@ open class FluctuateView : UIView {
         content = ContentView(frame: self.frame)
         content?.clearContents()
         content?.setOffset(0, self.frame.height)
+        content?.delegate = self
         
         for i in 0..<(dataSource!.contentsCount()) {
             content?.registerContent(content: (dataSource?.fluctuateView(self, contentByIndex: i).view)!,
@@ -204,6 +209,12 @@ extension FluctuateView : FluctuateMenuViewDelegate {
         if contentIndex > dataSource!.contentsCount() { return }
         content?.show(contentIndex)
         update(dataSource!.fluctuateView(self, contentTypeByIndex: contentIndex) == .fixed ? .fixedContent : .fullContent)
+    }
+}
+
+extension FluctuateView : FluctuateContentViewDelegate {
+    public func backToNoContent() {
+        update(.noContent)
     }
 }
 
@@ -288,12 +299,14 @@ extension FluctuateView {
             if prevState != .fixedContent {
                 
                 return {
+                    
                     self.content?.setOffset(self.frame.width, self.menuOffset + self.propaties.menuHeight)
                     self.menuOffset = -self.propaties.menuHeight
+                    self.content?.setOffset(self.menuOffset + self.propaties.menuHeight)
                     
                     UIView.animate(withDuration: TimeInterval(self.propaties.duration), delay:0, options: [.curveEaseInOut], animations: {
                         
-                        self.cover?.setUnchor(nextState != .fullContent ? self.menuOffset : self.propaties.fullCoveredOffset)
+                        self.cover?.setUnchor(withOffsetX: -self.frame.width, self.propaties.menuOffsetOnNocontentMode)
                         self.menu?.setOffset(-self.frame.width, self.propaties.menuOffsetOnNocontentMode)
                         self.content?.setOffset(self.menuOffset + self.propaties.menuHeight)
                         self.nocontent?.setOffset(-self.frame.width, self.propaties.menuOffsetOnNocontentMode + self.propaties.menuHeight)
@@ -302,12 +315,28 @@ extension FluctuateView {
                 
             } else {
                 return {
+                    /*
+                    self.menuOffset = self.propaties.menuOffsetOnNocontentMode
+                    let tempState = self.state
+                    UIView.animate(withDuration: TimeInterval(self.propaties.duration), delay:0, options: [.curveEaseInOut], animations: {
+                        self.cover?.setUnchor(nextState != .fullContent ? self.menuOffset : self.propaties.fullCoveredOffset)
+                        self.menu?.setOffset(self.menuOffset)
+                        self.content?.setOffset(self.frame.height)
+                        self.nocontent?.setOffset(self.propaties.menuOffsetOnNocontentMode + self.propaties.menuHeight)
+                    }, completion: { _ in
+                        if tempState == .fixedContent {
+                            self.exchangeSubview(at: 0, withSubviewAt: 1)
+                        }
+                        //self.transition(prev: .noContent, next: .fullContent)()
+                    })*/
+                    
+                    
                     self.content?.setOffset(self.frame.width, self.menuOffset + self.propaties.menuHeight)
                     self.menuOffset = -self.propaties.menuHeight
                     
                     UIView.animate(withDuration: TimeInterval(self.propaties.duration), delay:0, options: [.curveEaseInOut], animations: {
                         
-                        self.cover?.setUnchor(nextState != .fullContent ? self.menuOffset : self.propaties.fullCoveredOffset)
+                        self.cover?.setUnchor(withOffsetX: -self.frame.width, self.propaties.menuOffsetOnFixedContentMode)
                         self.menu?.setOffset(-self.frame.width, self.propaties.menuOffsetOnFixedContentMode)
                         self.content?.setOffset(self.menuOffset + self.propaties.menuHeight)
                         self.nocontent?.setOffset(-self.frame.width, self.propaties.menuOffsetOnNocontentMode + self.propaties.menuHeight)

@@ -20,14 +20,24 @@ open class ContentView : UIView, FluctuateContentView {
     fileprivate lazy var contents: [UIView] = []
     fileprivate lazy var types: [ContentViewType] = []
     fileprivate lazy var contentSize: CGSize = CGSize(width: 0, height: 0)
-    
-    fileprivate func reframe(){
-        self.frame.size = CGSize(width: contentSize.width * CGFloat(contentCount), height: contentSize.height)
-    }
+    open weak var delegate: FluctuateContentViewDelegate?
     
     override public init(frame: CGRect) {
         super.init(frame: frame)
         contentSize = frame.size
+        
+        isUserInteractionEnabled = true
+        let swipeRightRecognizer = UISwipeGestureRecognizer(target:self, action:#selector(self.swipe(sender:)))
+        swipeRightRecognizer.direction = .right
+        addGestureRecognizer(swipeRightRecognizer)
+    }
+
+    @objc fileprivate func swipe(sender:UISwipeGestureRecognizer) {
+        if sender.direction == UISwipeGestureRecognizerDirection.right && types[contentIndex] == .full { delegate?.backToNoContent() }
+    }
+ 
+    fileprivate func reframe(){
+        self.frame.size = CGSize(width: contentSize.width * CGFloat(contentCount), height: contentSize.height)
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -65,9 +75,5 @@ open class ContentView : UIView, FluctuateContentView {
         if pageIndex >= contentCount { return }
         frame.origin = CGPoint(x: -contentSize.width * CGFloat(pageIndex), y: frame.origin.y)
         contentIndex = pageIndex
-        
-        //for i in 0..<contentCount {
-        //    contents[i].isHidden = (i != contentIndex)
-        //}
     }
 }

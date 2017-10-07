@@ -14,8 +14,8 @@ open class FluctuateViewController: UIViewController, FluctuateViewDataSource, F
     open override func viewDidLoad() {
         super.viewDidLoad()
         fluctuateView = FluctuateView(frame: self.view.frame)
-        fluctuateView.dataSource = self
         fluctuateView.delegate = self
+        fluctuateView.dataSource = self
         self.view.addSubview(fluctuateView)
     }
     
