@@ -144,10 +144,31 @@ open class FluctuateView : UIView {
         menuOffset = self.bounds.height
     }
     
-    fileprivate func update(_ nextState: FluctuateViewState){
+    fileprivate func update(_ nextState: FluctuateViewState, content contentIndex: Int?){
         
-        self.transition(prev: state, next: nextState)()
-        self.state = nextState
+        if let contIndex = contentIndex {
+            
+            if nextState != .fullContent {
+                content?.show(contIndex)
+                transition(prev: state, next: nextState, completion: {
+                    self.state = nextState
+                })()
+            } else {
+                transition(prev: state, next: .noContent, completion: {
+                    self.state = .noContent
+                    self.content?.show(contIndex)
+                    self.transition(prev: .noContent, next: nextState, completion: {
+                        self.state = nextState
+                    })()
+                })()
+            }
+            
+        } else {
+            transition(prev: state, next: nextState, completion: {
+                self.state = nextState
+            })()
+        }
+        
         delegate?.onStateChage(state)
     }
     
@@ -188,27 +209,21 @@ open class FluctuateView : UIView {
         content?.removeFromSuperview()
         nocontent?.removeFromSuperview()
     }
-    
-    @objc fileprivate func selectedContent(_ sender: UIButton){
-        content?.show(sender.tag)
-        let contentType = dataSource!.fluctuateView(self, contentTypeByIndex: sender.tag)
-        update(contentType == .fixed ? .fixedContent : .fullContent)
-    }
 }
 
 extension FluctuateView : FluctuateCoverViewDelegate {
     
-    public func coverUp() { update(.noContent) }
+    public func coverUp() { update(.noContent, content: nil) }
     
     public func coverDown() {
         switch state {
         case .fullCovered:
             break
         case .noContent:
-            update(.fullCovered)
+            update(.fullCovered, content: nil)
             break
         default:
-            update(.noContent)
+            update(.noContent, content: nil)
             break
         }
     }
@@ -217,21 +232,20 @@ extension FluctuateView : FluctuateCoverViewDelegate {
 extension FluctuateView : FluctuateMenuViewDelegate {
     public func selectContent(_ contentIndex: Int) {
         if contentIndex > dataSource!.contentsCount() { return }
-        content?.show(contentIndex)
-        update(dataSource!.fluctuateView(self, contentTypeByIndex: contentIndex) == .fixed ? .fixedContent : .fullContent)
+        update(dataSource!.fluctuateView(self, contentTypeByIndex: contentIndex) == .fixed ? .fixedContent : .fullContent, content: contentIndex)
     }
 }
 
 extension FluctuateView : FluctuateContentViewDelegate {
     public func backToNoContent() {
-        update(.noContent)
+        update(.noContent, content: nil)
     }
 }
 
 //Animations
 extension FluctuateView {
     
-    fileprivate func transition(prev prevState: FluctuateViewState, next nextState: FluctuateViewState) -> () -> () {
+    fileprivate func transition(prev prevState: FluctuateViewState, next nextState: FluctuateViewState, completion: @escaping () -> ()) -> () -> () {
         
         switch nextState {
         case .fullCovered:
@@ -239,6 +253,8 @@ extension FluctuateView {
             return {
                 UIView.animate(withDuration: TimeInterval(self.propaties.duration), animations: {
                     self.cover?.setUnchor(self.frame.height)
+                }, completion: { _ in
+                    completion()
                 })
             }
             
@@ -258,6 +274,7 @@ extension FluctuateView {
                         self.content?.setOffset( self.frame.width, 0)
                     }, completion: { _ in
                         self.content?.setOffset( 0, self.frame.height)
+                        completion()
                     })
                 }
                 
@@ -274,7 +291,9 @@ extension FluctuateView {
                     }, completion: { _ in
                         if tempState == .fixedContent {
                             self.exchangeSubview(at: 0, withSubviewAt: 1)
+                            print("exchange")
                         }
+                        completion()
                     })
                 }
             }
@@ -299,6 +318,7 @@ extension FluctuateView {
                             self.content?.setOffset(self.menuOffset + self.propaties.menuHeight)
                         }, completion: { _ in
                             self.nocontent?.setOffset(self.menuOffset + self.propaties.menuHeight)
+                            completion()
                         })
                     })
                 }
@@ -306,6 +326,23 @@ extension FluctuateView {
             
         case .fullContent:
             
+            return {
+                
+                self.content?.setOffset(self.frame.width, self.menuOffset + self.propaties.menuHeight)
+                self.menuOffset = -self.propaties.menuHeight
+                self.content?.setOffset(self.menuOffset + self.propaties.menuHeight)
+                
+                UIView.animate(withDuration: TimeInterval(self.propaties.duration), delay:0, options: [.curveEaseInOut], animations: {
+                    
+                    self.cover?.setUnchor(withOffsetX: -self.frame.width, self.propaties.menuOffsetOnNocontentMode)
+                    self.menu?.setOffset(-self.frame.width, self.propaties.menuOffsetOnNocontentMode)
+                    self.content?.setOffset(0)
+                    self.nocontent?.setOffset(-self.frame.width, self.propaties.menuOffsetOnNocontentMode + self.propaties.menuHeight)
+                }, completion: { _ in
+                    completion()
+                })
+            }
+            /*
             if prevState != .fixedContent {
                 
                 return {
@@ -320,12 +357,14 @@ extension FluctuateView {
                         self.menu?.setOffset(-self.frame.width, self.propaties.menuOffsetOnNocontentMode)
                         self.content?.setOffset(0)
                         self.nocontent?.setOffset(-self.frame.width, self.propaties.menuOffsetOnNocontentMode + self.propaties.menuHeight)
+                    }, completion: { _ in
+                        completion()
                     })
                 }
                 
             } else {
                 return {
-
+                    
                     self.content?.setOffset(self.frame.width, self.menuOffset + self.propaties.menuHeight)
                     self.menuOffset = -self.propaties.menuHeight
                     
@@ -337,9 +376,10 @@ extension FluctuateView {
                         self.nocontent?.setOffset(-self.frame.width, self.propaties.menuOffsetOnNocontentMode + self.propaties.menuHeight)
                     }, completion: { _ in
                         self.exchangeSubview(at: 0, withSubviewAt: 1)
+                        completion()
                     })
                 }
-            }
+            }*/
         }
         return {}
     }
