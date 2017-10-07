@@ -132,105 +132,7 @@ open class FluctuateView : UIView {
     
     fileprivate func update(_ nextState: FluctuateViewState){
         
-        switch nextState {
-        case .fullCovered:
-        
-            UIView.animate(withDuration: TimeInterval(propaties.duration), animations: {
-                self.cover?.setUnchor(self.frame.height)
-            })
-            break
-        case .noContent:
-            
-            if self.state == .fullContent {
-                
-                self.frame.origin = CGPoint(x: -self.frame.width, y: 0)
-                self.menuOffset = self.propaties.menuOffsetOnNocontentMode
-                self.nocontent?.setOffset(self.menuOffset + self.propaties.menuHeight)
-                self.menu?.setOffset(self.menuOffset)
-                self.cover?.setUnchor(self.menuOffset)
-
-                UIView.animate(withDuration: TimeInterval(propaties.duration), delay:0, options: [.curveEaseInOut], animations: {
-                    self.frame.origin = CGPoint(x: 0, y: 0)
-                    self.content?.setOffset( self.frame.width, self.propaties.fullCoveredOffset)
-                }, completion: { _ in
-                    self.content?.setOffset( 0, self.frame.height)
-                })
-                
-            }else{
-                
-                self.menuOffset = self.propaties.menuOffsetOnNocontentMode
-                let tempState = self.state
-                UIView.animate(withDuration: TimeInterval(propaties.duration), delay:0, options: [.curveEaseInOut], animations: {
-                    self.cover?.setUnchor(nextState != .fullContent ? self.menuOffset : self.propaties.fullCoveredOffset)
-                    self.menu?.setOffset(self.menuOffset)
-                    self.content?.setOffset(self.frame.height)
-                    self.nocontent?.setOffset(self.propaties.menuOffsetOnNocontentMode + self.propaties.menuHeight)
-                }, completion: { _ in
-                    if tempState == .fixedContent {
-                        self.exchangeSubview(at: 0, withSubviewAt: 1)
-                    }
-                })
-            }
-            
-            break
-            
-        case .fixedContent:
-            
-            if self.state != .fixedContent {
-                exchangeSubview(at: 0, withSubviewAt: 1)
-                self.menuOffset = self.propaties.menuOffsetOnNocontentMode
-                
-                UIView.animate(withDuration: TimeInterval(propaties.duration), delay:0, options: [.curveEaseInOut], animations: {
-                    
-                    self.content?.setOffset(self.menuOffset + self.propaties.menuHeight)
-                }, completion: { _ in
-                    self.menuOffset = self.propaties.menuOffsetOnFixedContentMode
-                    
-                    UIView.animate(withDuration: TimeInterval(self.propaties.duration), delay:0, options: [.curveEaseInOut], animations: {
-                        self.cover?.setUnchor(nextState != .fullContent ? self.menuOffset : self.propaties.fullCoveredOffset)
-                        self.menu?.setOffset(self.menuOffset)
-                        self.content?.setOffset(self.menuOffset + self.propaties.menuHeight)
-                    }, completion: { _ in
-                        self.nocontent?.setOffset(self.menuOffset + self.propaties.menuHeight)
-                    })
-                })
-            }
-            break
-        case .fullContent:
-            
-            
-            if self.state != .fixedContent {
-                
-                self.content?.setOffset(self.frame.width, self.menuOffset + self.propaties.menuHeight)
-                self.menuOffset = -self.propaties.menuHeight
-                
-                UIView.animate(withDuration: TimeInterval(propaties.duration), delay:0, options: [.curveEaseInOut], animations: {
-                
-                    self.cover?.setUnchor(nextState != .fullContent ? self.menuOffset : self.propaties.fullCoveredOffset)
-                    self.menu?.setOffset(-self.frame.width, self.propaties.menuOffsetOnNocontentMode)
-                    self.content?.setOffset(self.menuOffset + self.propaties.menuHeight)
-                    self.nocontent?.setOffset(-self.frame.width, self.propaties.menuOffsetOnNocontentMode + self.propaties.menuHeight)
-                })
-                break
-                
-            } else {
-                
-                self.content?.setOffset(self.frame.width, self.menuOffset + self.propaties.menuHeight)
-                self.menuOffset = -self.propaties.menuHeight
-                
-                UIView.animate(withDuration: TimeInterval(propaties.duration), delay:0, options: [.curveEaseInOut], animations: {
-                    
-                    self.cover?.setUnchor(nextState != .fullContent ? self.menuOffset : self.propaties.fullCoveredOffset)
-                    self.menu?.setOffset(-self.frame.width, self.propaties.menuOffsetOnFixedContentMode)
-                    self.content?.setOffset(self.menuOffset + self.propaties.menuHeight)
-                    self.nocontent?.setOffset(-self.frame.width, self.propaties.menuOffsetOnNocontentMode + self.propaties.menuHeight)
-                }, completion: { _ in
-                    self.exchangeSubview(at: 0, withSubviewAt: 1)
-                })
-                break
-            }
-        }
-        
+        self.transition(prev: state, next: nextState)()
         self.state = nextState
         delegate?.onStateChage(state)
     }
@@ -302,5 +204,119 @@ extension FluctuateView : FluctuateMenuViewDelegate {
         if contentIndex > dataSource!.contentsCount() { return }
         content?.show(contentIndex)
         update(dataSource!.fluctuateView(self, contentTypeByIndex: contentIndex) == .fixed ? .fixedContent : .fullContent)
+    }
+}
+
+//Animations
+extension FluctuateView {
+    
+    fileprivate func transition(prev prevState: FluctuateViewState, next nextState: FluctuateViewState) -> () -> () {
+        
+        switch nextState {
+        case .fullCovered:
+            
+            return {
+                UIView.animate(withDuration: TimeInterval(self.propaties.duration), animations: {
+                    self.cover?.setUnchor(self.frame.height)
+                })
+            }
+            
+        case .noContent:
+            
+            if prevState == .fullContent {
+                
+                return {
+                    self.frame.origin = CGPoint(x: -self.frame.width, y: 0)
+                    self.menuOffset = self.propaties.menuOffsetOnNocontentMode
+                    self.nocontent?.setOffset(self.menuOffset + self.propaties.menuHeight)
+                    self.menu?.setOffset(self.menuOffset)
+                    self.cover?.setUnchor(self.menuOffset)
+                    
+                    UIView.animate(withDuration: TimeInterval(self.propaties.duration), delay:0, options: [.curveEaseInOut], animations: {
+                        self.frame.origin = CGPoint(x: 0, y: 0)
+                        self.content?.setOffset( self.frame.width, self.propaties.menuOffsetOnFixedContentMode)
+                    }, completion: { _ in
+                        self.content?.setOffset( 0, self.frame.height)
+                    })
+                }
+                
+            }else{
+                
+                return {
+                    self.menuOffset = self.propaties.menuOffsetOnNocontentMode
+                    let tempState = self.state
+                    UIView.animate(withDuration: TimeInterval(self.propaties.duration), delay:0, options: [.curveEaseInOut], animations: {
+                        self.cover?.setUnchor(nextState != .fullContent ? self.menuOffset : self.propaties.fullCoveredOffset)
+                        self.menu?.setOffset(self.menuOffset)
+                        self.content?.setOffset(self.frame.height)
+                        self.nocontent?.setOffset(self.propaties.menuOffsetOnNocontentMode + self.propaties.menuHeight)
+                    }, completion: { _ in
+                        if tempState == .fixedContent {
+                            self.exchangeSubview(at: 0, withSubviewAt: 1)
+                        }
+                    })
+                }
+            }
+            
+        case .fixedContent:
+            
+            if prevState != .fixedContent {
+                
+                return {
+                    self.exchangeSubview(at: 0, withSubviewAt: 1)
+                    self.menuOffset = self.propaties.menuOffsetOnNocontentMode
+                    
+                    UIView.animate(withDuration: TimeInterval(self.propaties.duration), delay:0, options: [.curveEaseInOut], animations: {
+                        
+                        self.content?.setOffset(self.menuOffset + self.propaties.menuHeight)
+                    }, completion: { _ in
+                        self.menuOffset = self.propaties.menuOffsetOnFixedContentMode
+                        
+                        UIView.animate(withDuration: TimeInterval(self.propaties.duration), delay:0, options: [.curveEaseInOut], animations: {
+                            self.cover?.setUnchor(nextState != .fullContent ? self.menuOffset : self.propaties.fullCoveredOffset)
+                            self.menu?.setOffset(self.menuOffset)
+                            self.content?.setOffset(self.menuOffset + self.propaties.menuHeight)
+                        }, completion: { _ in
+                            self.nocontent?.setOffset(self.menuOffset + self.propaties.menuHeight)
+                        })
+                    })
+                }
+            }
+            
+        case .fullContent:
+            
+            if prevState != .fixedContent {
+                
+                return {
+                    self.content?.setOffset(self.frame.width, self.menuOffset + self.propaties.menuHeight)
+                    self.menuOffset = -self.propaties.menuHeight
+                    
+                    UIView.animate(withDuration: TimeInterval(self.propaties.duration), delay:0, options: [.curveEaseInOut], animations: {
+                        
+                        self.cover?.setUnchor(nextState != .fullContent ? self.menuOffset : self.propaties.fullCoveredOffset)
+                        self.menu?.setOffset(-self.frame.width, self.propaties.menuOffsetOnNocontentMode)
+                        self.content?.setOffset(self.menuOffset + self.propaties.menuHeight)
+                        self.nocontent?.setOffset(-self.frame.width, self.propaties.menuOffsetOnNocontentMode + self.propaties.menuHeight)
+                    })
+                }
+                
+            } else {
+                return {
+                    self.content?.setOffset(self.frame.width, self.menuOffset + self.propaties.menuHeight)
+                    self.menuOffset = -self.propaties.menuHeight
+                    
+                    UIView.animate(withDuration: TimeInterval(self.propaties.duration), delay:0, options: [.curveEaseInOut], animations: {
+                        
+                        self.cover?.setUnchor(nextState != .fullContent ? self.menuOffset : self.propaties.fullCoveredOffset)
+                        self.menu?.setOffset(-self.frame.width, self.propaties.menuOffsetOnFixedContentMode)
+                        self.content?.setOffset(self.menuOffset + self.propaties.menuHeight)
+                        self.nocontent?.setOffset(-self.frame.width, self.propaties.menuOffsetOnNocontentMode + self.propaties.menuHeight)
+                    }, completion: { _ in
+                        self.exchangeSubview(at: 0, withSubviewAt: 1)
+                    })
+                }
+            }
+        }
+        return {}
     }
 }
