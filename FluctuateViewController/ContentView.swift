@@ -13,27 +13,19 @@ public enum ContentViewType {
     case full
 }
 
-open class ContentView : UIView, FluctuateContentView {
+open class ContentView : UIView, FluctuateContentView, FluctuateContentHeaderDelegate {
     
     fileprivate lazy var contentCount: Int = 0
     fileprivate lazy var contentIndex = 0
     fileprivate lazy var contents: [UIView] = []
     fileprivate lazy var types: [ContentViewType] = []
     fileprivate lazy var contentSize: CGSize = CGSize(width: 0, height: 0)
+    fileprivate var header: (UIView & FluctuateFullContentHeader)?
     open weak var delegate: FluctuateContentViewDelegate?
     
     override public init(frame: CGRect) {
         super.init(frame: frame)
         contentSize = frame.size
-        
-        isUserInteractionEnabled = true
-        let swipeRightRecognizer = UISwipeGestureRecognizer(target:self, action:#selector(self.swipe(sender:)))
-        swipeRightRecognizer.direction = .right
-        addGestureRecognizer(swipeRightRecognizer)
-    }
-
-    @objc fileprivate func swipe(sender:UISwipeGestureRecognizer) {
-        if sender.direction == UISwipeGestureRecognizerDirection.right && types[contentIndex] == .full { delegate?.backToNoContent() }
     }
  
     fileprivate func reframe(){
@@ -63,6 +55,11 @@ open class ContentView : UIView, FluctuateContentView {
         reframe()
     }
     
+    open func registerHeader(header contentHeader: UIView & FluctuateFullContentHeader){
+        self.header = contentHeader
+        self.header?.delegate = self
+    }
+    
     public func clearContents(){
         contentCount = 0
         contentIndex = 0
@@ -75,5 +72,16 @@ open class ContentView : UIView, FluctuateContentView {
         if pageIndex >= contentCount { return }
         frame.origin = CGPoint(x: -contentSize.width * CGFloat(pageIndex), y: frame.origin.y)
         contentIndex = pageIndex
+        if types[contentIndex] == .full {
+            addSubview(self.header!)
+            self.header?.frame.origin = CGPoint(x: contentSize.width * CGFloat(pageIndex), y: 0)
+        } else {
+            self.header?.removeFromSuperview()
+        }
+    }
+    
+    //Header Delegate
+    final public func backButtonTouched(){
+        delegate?.backToNoContent()
     }
 }

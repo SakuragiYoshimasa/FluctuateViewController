@@ -55,6 +55,11 @@ class ViewController : FluctuateViewController {
         nocontent.backgroundColor = UIColor.brown
         return nocontent
     }
+    
+    override func fullContentHeader() -> UIView & FluctuateFullContentHeader {
+        return SampleFullContentHeader(frame: CGRect(x:0, y:0, width: self.view.frame.width, height: 60))
+    }
+    
     // FluctuateViewDelegate
     override func onStateChage(_ state: FluctuateViewState){
         print("\(state)")

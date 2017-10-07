@@ -29,6 +29,7 @@
 		0691D3351F7938CC008F08A1 /* 01.png in Resources */ = {isa = PBXBuildFile; fileRef = 0691D3341F7938CC008F08A1 /* 01.png */; };
 		0691D3371F7938F0008F08A1 /* 07.png in Resources */ = {isa = PBXBuildFile; fileRef = 0691D3361F7938F0008F08A1 /* 07.png */; };
 		06BE5DB91F865758001C5757 /* NoContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BE5DB81F865758001C5757 /* NoContentView.swift */; };
+		06F7FA5D1F88B886007C8E1E /* SampleFullContentHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06F7FA5C1F88B886007C8E1E /* SampleFullContentHeader.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +70,7 @@
 		0691D3341F7938CC008F08A1 /* 01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 01.png; path = "../../../../UnityProjects/キャプチャ/Gifs/01.png"; sourceTree = "<group>"; };
 		0691D3361F7938F0008F08A1 /* 07.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 07.png; path = ../../../../UnityProjects/experiment_Unity/gifMake/07.png; sourceTree = "<group>"; };
 		06BE5DB81F865758001C5757 /* NoContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoContentView.swift; sourceTree = "<group>"; };
+		06F7FA5C1F88B886007C8E1E /* SampleFullContentHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleFullContentHeader.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,6 +148,7 @@
 				067BAA671F79947B00DA7FCA /* ContentView.swift */,
 				06BE5DB81F865758001C5757 /* NoContentView.swift */,
 				0670A00E1F7DE15C00223A37 /* Utility.swift */,
+				06F7FA5C1F88B886007C8E1E /* SampleFullContentHeader.swift */,
 			);
 			name = FluctuateViewController;
 			path = ../FluctuateViewController;
@@ -284,6 +287,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				06BE5DB91F865758001C5757 /* NoContentView.swift in Sources */,
+				06F7FA5D1F88B886007C8E1E /* SampleFullContentHeader.swift in Sources */,
 				0670A00F1F7DE15C00223A37 /* Utility.swift in Sources */,
 				067BAA711F79947B00DA7FCA /* FluctuateViewController.swift in Sources */,
 				067BAA731F79947B00DA7FCA /* MenuView.swift in Sources */,
