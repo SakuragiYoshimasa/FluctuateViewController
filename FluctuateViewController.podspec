@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
 #
 
 s.name         = "FluctuateViewController"
-s.version      = "1.0.3"
+s.version      = "1.0.4"
 s.summary      = "ViewController for a specific situation on iPad"
 
 # This description is used to generate tags and improve search results.
@@ -97,7 +97,7 @@ s.source_files  = "FluctuateViewController/*"
 
 # s.public_header_files = "Classes/**/*.h"
 s.pod_target_xcconfig =  {
-'SWIFT_VERSION' => '3.0',
+'SWIFT_VERSION' => '4.0',
 }
 
 # ――― Resources ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
