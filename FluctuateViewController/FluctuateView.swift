@@ -149,7 +149,7 @@ open class FluctuateView : UIView {
                 self.menu?.setOffset(self.menuOffset)
                 self.cover?.setUnchor(self.menuOffset)
 
-                UIView.animate(withDuration: TimeInterval(propaties.duration), animations: {
+                UIView.animate(withDuration: TimeInterval(propaties.duration), delay:0, options: [.curveEaseInOut], animations: {
                     self.frame.origin = CGPoint(x: 0, y: 0)
                     self.content?.setOffset( self.frame.width, self.propaties.fullCoveredOffset)
                 }, completion: { finished in
@@ -160,7 +160,7 @@ open class FluctuateView : UIView {
                 
                 self.menuOffset = self.propaties.menuOffsetOnNocontentMode
                 let tempState = self.state
-                UIView.animate(withDuration: TimeInterval(propaties.duration), animations: {
+                UIView.animate(withDuration: TimeInterval(propaties.duration), delay:0, options: [.curveEaseInOut], animations: {
                     self.cover?.setUnchor(nextState != .fullContent ? self.menuOffset : self.propaties.fullCoveredOffset)
                     self.menu?.setOffset(self.menuOffset)
                     self.content?.setOffset(self.frame.height)
@@ -180,13 +180,13 @@ open class FluctuateView : UIView {
                 exchangeSubview(at: 0, withSubviewAt: 1)
                 self.menuOffset = self.propaties.menuOffsetOnNocontentMode
                 
-                UIView.animate(withDuration: TimeInterval(propaties.duration), animations: {
+                UIView.animate(withDuration: TimeInterval(propaties.duration), delay:0, options: [.curveEaseInOut], animations: {
                     
                     self.content?.setOffset(self.menuOffset + self.propaties.menuHeight)
                 }, completion: { finished in
                     self.menuOffset = self.propaties.menuOffsetOnFixedContentMode
                     
-                    UIView.animate(withDuration: TimeInterval(self.propaties.duration), animations: {
+                    UIView.animate(withDuration: TimeInterval(self.propaties.duration), delay:0, options: [.curveEaseInOut], animations: {
                         self.cover?.setUnchor(nextState != .fullContent ? self.menuOffset : self.propaties.fullCoveredOffset)
                         self.menu?.setOffset(self.menuOffset)
                         self.content?.setOffset(self.menuOffset + self.propaties.menuHeight)
@@ -202,7 +202,7 @@ open class FluctuateView : UIView {
                 self.content?.setOffset(self.frame.width, self.menuOffset + self.propaties.menuHeight)
                 self.menuOffset = -self.propaties.menuHeight
                 
-                UIView.animate(withDuration: TimeInterval(propaties.duration), animations: {
+                UIView.animate(withDuration: TimeInterval(propaties.duration), delay:0, options: [.curveEaseInOut], animations: {
                 
                     self.cover?.setUnchor(nextState != .fullContent ? self.menuOffset : self.propaties.fullCoveredOffset)
                     self.menu?.setOffset(-self.frame.width, self.propaties.menuOffsetOnNocontentMode)
@@ -216,7 +216,7 @@ open class FluctuateView : UIView {
                 self.content?.setOffset(self.frame.width, self.menuOffset + self.propaties.menuHeight)
                 self.menuOffset = -self.propaties.menuHeight
                 
-                UIView.animate(withDuration: TimeInterval(propaties.duration), animations: {
+                UIView.animate(withDuration: TimeInterval(propaties.duration), delay:0, options: [.curveEaseInOut], animations: {
                     
                     self.cover?.setUnchor(nextState != .fullContent ? self.menuOffset : self.propaties.fullCoveredOffset)
                     self.menu?.setOffset(-self.frame.width, self.propaties.menuOffsetOnFixedContentMode)
