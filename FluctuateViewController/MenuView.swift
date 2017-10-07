@@ -23,7 +23,11 @@ open class MenuView : UIView, FluctuateMenuView {
     //FluctuateMenuView
     public final func select(contentIndex: Int){ delegate?.selectContent(contentIndex) }
     final public func setOffset(_ y: CGFloat){
-        self.frame.origin = CGPoint(x: frame.minX, y: y)
+        self.frame.origin = CGPoint(x: 0, y: y)
+    }
+    
+    final public func setOffset(_ x: CGFloat, _ y: CGFloat){
+        self.frame.origin = CGPoint(x: x, y: y)
     }
     open func recreateMenuViewByContents(dataSource: FluctuateViewDataSource){}
 }

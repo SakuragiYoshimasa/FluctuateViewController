@@ -25,6 +25,7 @@ public protocol FluctuateCoverView : class {
 }
 
 public protocol FluctuateNoContentView : class {
+    func setOffset(_ x: CGFloat, _ y: CGFloat)
     func setOffset(_ y: CGFloat)
 }
 
@@ -33,6 +34,7 @@ public protocol FluctuateMenuViewDelegate : class {
 }
 
 public protocol FluctuateMenuView : class {
+    func setOffset(_ x: CGFloat, _ y: CGFloat)
     func recreateMenuViewByContents(dataSource: FluctuateViewDataSource)
 }
 
@@ -132,13 +134,9 @@ open class FluctuateView : UIView {
         
         switch nextState {
         case .fullCovered:
-            self.menuOffset = self.frame.height
+        
             UIView.animate(withDuration: TimeInterval(propaties.duration), animations: {
-                
-                self.cover?.setUnchor(nextState != .fullContent ? self.menuOffset : self.propaties.fullCoveredOffset)
-                self.menu?.setOffset(self.menuOffset)
-                self.content?.setOffset(self.frame.height)
-                self.nocontent?.setOffset(self.frame.height)
+                self.cover?.setUnchor(self.frame.height)
             })
             break
         case .noContent:
@@ -147,11 +145,12 @@ open class FluctuateView : UIView {
                 
                 self.frame.origin = CGPoint(x: -self.frame.width, y: 0)
                 self.menuOffset = self.propaties.menuOffsetOnNocontentMode
-                
+                self.nocontent?.setOffset(self.menuOffset + self.propaties.menuHeight)
+                self.menu?.setOffset(self.menuOffset)
+                self.cover?.setUnchor(self.menuOffset)
+
                 UIView.animate(withDuration: TimeInterval(propaties.duration), animations: {
                     self.frame.origin = CGPoint(x: 0, y: 0)
-                    self.cover?.setUnchor(nextState != .fullContent ? self.menuOffset : self.propaties.fullCoveredOffset)
-                    self.menu?.setOffset(self.menuOffset)
                     self.content?.setOffset( self.frame.width, self.propaties.fullCoveredOffset)
                 }, completion: { finished in
                     self.content?.setOffset( 0, self.frame.height)
@@ -160,19 +159,25 @@ open class FluctuateView : UIView {
             }else{
                 
                 self.menuOffset = self.propaties.menuOffsetOnNocontentMode
+                let tempState = self.state
                 UIView.animate(withDuration: TimeInterval(propaties.duration), animations: {
                     self.cover?.setUnchor(nextState != .fullContent ? self.menuOffset : self.propaties.fullCoveredOffset)
                     self.menu?.setOffset(self.menuOffset)
                     self.content?.setOffset(self.frame.height)
                     self.nocontent?.setOffset(self.propaties.menuOffsetOnNocontentMode + self.propaties.menuHeight)
+                }, completion: { finished in
+                    if tempState == .fixedContent {
+                        self.exchangeSubview(at: 0, withSubviewAt: 1)
+                    }
                 })
             }
+            
             break
             
         case .fixedContent:
             
             if self.state != .fixedContent {
-                
+                exchangeSubview(at: 0, withSubviewAt: 1)
                 self.menuOffset = self.propaties.menuOffsetOnNocontentMode
                 
                 UIView.animate(withDuration: TimeInterval(propaties.duration), animations: {
@@ -191,6 +196,7 @@ open class FluctuateView : UIView {
             break
         case .fullContent:
             
+            
             if self.state != .fixedContent {
                 
                 self.content?.setOffset(self.frame.width, self.menuOffset + self.propaties.menuHeight)
@@ -199,8 +205,9 @@ open class FluctuateView : UIView {
                 UIView.animate(withDuration: TimeInterval(propaties.duration), animations: {
                 
                     self.cover?.setUnchor(nextState != .fullContent ? self.menuOffset : self.propaties.fullCoveredOffset)
-                    self.menu?.setOffset(self.menuOffset)
+                    self.menu?.setOffset(-self.frame.width, self.propaties.menuOffsetOnNocontentMode)
                     self.content?.setOffset(self.menuOffset + self.propaties.menuHeight)
+                    self.nocontent?.setOffset(-self.frame.width, self.propaties.menuOffsetOnNocontentMode + self.propaties.menuHeight)
                 })
                 break
                 
@@ -212,8 +219,11 @@ open class FluctuateView : UIView {
                 UIView.animate(withDuration: TimeInterval(propaties.duration), animations: {
                     
                     self.cover?.setUnchor(nextState != .fullContent ? self.menuOffset : self.propaties.fullCoveredOffset)
-                    self.menu?.setOffset(self.menuOffset)
+                    self.menu?.setOffset(-self.frame.width, self.propaties.menuOffsetOnFixedContentMode)
                     self.content?.setOffset(self.menuOffset + self.propaties.menuHeight)
+                    self.nocontent?.setOffset(-self.frame.width, self.propaties.menuOffsetOnNocontentMode + self.propaties.menuHeight)
+                }, completion: { finished in
+                    self.exchangeSubview(at: 0, withSubviewAt: 1)
                 })
                 break
             }
@@ -229,7 +239,8 @@ open class FluctuateView : UIView {
         
         content = ContentView(frame: self.frame)
         content?.clearContents()
-        content?.setOffset(0, menuOffset + propaties.menuHeight)
+        content?.setOffset(0, self.frame.height)
+        
         for i in 0..<(dataSource!.contentsCount()) {
             content?.registerContent(content: (dataSource?.fluctuateView(self, contentByIndex: i).view)!,
                                      type: (dataSource?.fluctuateView(self, contentTypeByIndex: i))!)
@@ -237,11 +248,11 @@ open class FluctuateView : UIView {
         addSubview(content!)
         
         nocontent = dataSource?.noContentView()
-        nocontent?.setOffset(menuOffset + propaties.menuHeight)
+        nocontent?.setOffset(propaties.menuOffsetOnNocontentMode + propaties.menuHeight)
         addSubview(nocontent!)
         
         menu = dataSource?.menuView()
-        menu?.setOffset(menuOffset)
+        menu?.setOffset(propaties.menuOffsetOnNocontentMode)
         menu?.delegate = self
         menu?.recreateMenuViewByContents(dataSource: self.dataSource!)
         addSubview(menu!)

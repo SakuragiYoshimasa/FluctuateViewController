@@ -14,6 +14,7 @@ class ViewController : FluctuateViewController {
         super.viewDidLoad()
         //Setting propaties
         fluctuateView.setPropaties(propaties: FluctuateViewPropaties(animationDuration: 0.4, menuHeight: 200, offsetOnNocontent: 400, offsetOnFixedContent: 60, fullCoveredOffset: 60))
+        self.view.backgroundColor = UIColor.colorWithHexString(hex: "000103")
     }
     
     // FluctuateViewDataSource

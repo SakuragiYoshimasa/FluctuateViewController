@@ -28,7 +28,6 @@ open class ContentView : UIView, FluctuateContentView {
     override public init(frame: CGRect) {
         super.init(frame: frame)
         contentSize = frame.size
-        backgroundColor = UIColor.blue
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -66,5 +65,9 @@ open class ContentView : UIView, FluctuateContentView {
         if pageIndex >= contentCount { return }
         frame.origin = CGPoint(x: -contentSize.width * CGFloat(pageIndex), y: frame.origin.y)
         contentIndex = pageIndex
+        
+        //for i in 0..<contentCount {
+        //    contents[i].isHidden = (i != contentIndex)
+        //}
     }
 }

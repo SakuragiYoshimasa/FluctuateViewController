@@ -9,7 +9,12 @@
 import UIKit
 
 open class NoContentView : UIView, FluctuateNoContentView {
-    open func setOffset(_ y: CGFloat) {
-        self.frame.origin = CGPoint(x: frame.minX, y: y)
+    
+    final public func setOffset(_ x: CGFloat, _ y: CGFloat){
+        self.frame.origin = CGPoint(x: x, y: y)
+    }
+    
+    final public func setOffset(_ y: CGFloat) {
+        self.frame.origin = CGPoint(x: 0, y: y)
     }
 }
