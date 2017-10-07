@@ -42,8 +42,11 @@ open class CoverView : UIView, FluctuateCoverView {
     }
     
     //FluctuateCoverView
-    
     final public func setUnchor(_ y: CGFloat) {
-        self.frame.origin = CGPoint(x: frame.minX, y: y - frame.size.height)
+        self.frame.origin = CGPoint(x: 0, y: y - frame.size.height)
+    }
+    
+    final public func setUnchor(withOffsetX x: CGFloat, _ y: CGFloat){
+        self.frame.origin = CGPoint(x: x, y: y - frame.size.height)
     }
 }

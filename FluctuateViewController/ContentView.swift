@@ -13,22 +13,23 @@ public enum ContentViewType {
     case full
 }
 
-open class ContentView : UIView, FluctuateContentView {
+open class ContentView : UIView, FluctuateContentView, FluctuateContentHeaderDelegate {
     
     fileprivate lazy var contentCount: Int = 0
     fileprivate lazy var contentIndex = 0
     fileprivate lazy var contents: [UIView] = []
     fileprivate lazy var types: [ContentViewType] = []
     fileprivate lazy var contentSize: CGSize = CGSize(width: 0, height: 0)
-    
-    fileprivate func reframe(){
-        self.frame.size = CGSize(width: contentSize.width * CGFloat(contentCount), height: contentSize.height)
-    }
+    fileprivate var header: (UIView & FluctuateFullContentHeader)?
+    open weak var delegate: FluctuateContentViewDelegate?
     
     override public init(frame: CGRect) {
         super.init(frame: frame)
         contentSize = frame.size
-        backgroundColor = UIColor.blue
+    }
+ 
+    fileprivate func reframe(){
+        self.frame.size = CGSize(width: contentSize.width * CGFloat(contentCount), height: contentSize.height)
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -37,8 +38,12 @@ open class ContentView : UIView, FluctuateContentView {
     
     //FluctuateContentView
     
+    final public func setOffset(_ x: CGFloat ,_ y: CGFloat){
+        self.frame.origin = CGPoint(x: x - contentSize.width * CGFloat(contentIndex), y: y)
+    }
+    
     final public func setOffset(_ y: CGFloat){
-        self.frame.origin = CGPoint(x: frame.minX, y: y)
+        self.frame.origin = CGPoint(x: -contentSize.width * CGFloat(contentIndex), y: y)
     }
     
     open func registerContent(content: UIView, type: ContentViewType){
@@ -48,6 +53,11 @@ open class ContentView : UIView, FluctuateContentView {
         addSubview(content)
         contentCount += 1
         reframe()
+    }
+    
+    open func registerHeader(header contentHeader: UIView & FluctuateFullContentHeader){
+        self.header = contentHeader
+        self.header?.delegate = self
     }
     
     public func clearContents(){
@@ -61,5 +71,17 @@ open class ContentView : UIView, FluctuateContentView {
     public func show(_ pageIndex: Int) {
         if pageIndex >= contentCount { return }
         frame.origin = CGPoint(x: -contentSize.width * CGFloat(pageIndex), y: frame.origin.y)
+        contentIndex = pageIndex
+        if types[contentIndex] == .full {
+            addSubview(self.header!)
+            self.header?.frame.origin = CGPoint(x: contentSize.width * CGFloat(pageIndex), y: 0)
+        } else {
+            self.header?.removeFromSuperview()
+        }
+    }
+    
+    //Header Delegate
+    final public func backButtonTouched(){
+        delegate?.backToNoContent()
     }
 }
