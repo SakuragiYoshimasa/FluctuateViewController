@@ -19,6 +19,7 @@ open class ContentView : UIView, FluctuateContentView, FluctuateContentHeaderDel
     fileprivate lazy var contentIndex = 0
     fileprivate lazy var contents: [UIView] = []
     fileprivate lazy var types: [ContentViewType] = []
+    fileprivate lazy var titles: [String] = []
     fileprivate lazy var contentSize: CGSize = CGSize(width: 0, height: 0)
     fileprivate var header: (UIView & FluctuateFullContentHeader)?
     open weak var delegate: FluctuateContentViewDelegate?
@@ -49,7 +50,7 @@ open class ContentView : UIView, FluctuateContentView, FluctuateContentHeaderDel
     open func registerContent(content: UIView, type: ContentViewType){
         contents.append(content)
         types.append(type)
-        content.frame.origin = CGPoint(x: contentSize.width * CGFloat(contentCount), y: 0)
+        content.frame.origin = CGPoint(x: contentSize.width * CGFloat(contentCount), y: type == .fixed ? 0 : (header?.frame.height)!)
         addSubview(content)
         contentCount += 1
         reframe()
@@ -64,6 +65,7 @@ open class ContentView : UIView, FluctuateContentView, FluctuateContentHeaderDel
         contentCount = 0
         contentIndex = 0
         contents = []
+        titles = []
         types = []
         reframe()
     }
@@ -83,5 +85,9 @@ open class ContentView : UIView, FluctuateContentView, FluctuateContentHeaderDel
     //Header Delegate
     final public func backButtonTouched(){
         delegate?.backToNoContent()
+    }
+    
+    open func contentTitle() -> String {
+        return titles[contentIndex]
     }
 }

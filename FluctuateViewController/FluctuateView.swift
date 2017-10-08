@@ -54,6 +54,7 @@ public protocol FluctuateFullContentHeader : class {
 
 public protocol FluctuateContentHeaderDelegate : class {
     func backButtonTouched()
+    func contentTitle() -> String
 }
 
 public protocol FluctuateContentViewDelegate : class {
@@ -291,7 +292,6 @@ extension FluctuateView {
                     }, completion: { _ in
                         if tempState == .fixedContent {
                             self.exchangeSubview(at: 0, withSubviewAt: 1)
-                            print("exchange")
                         }
                         completion()
                     })
@@ -342,44 +342,6 @@ extension FluctuateView {
                     completion()
                 })
             }
-            /*
-            if prevState != .fixedContent {
-                
-                return {
-                    
-                    self.content?.setOffset(self.frame.width, self.menuOffset + self.propaties.menuHeight)
-                    self.menuOffset = -self.propaties.menuHeight
-                    self.content?.setOffset(self.menuOffset + self.propaties.menuHeight)
-                    
-                    UIView.animate(withDuration: TimeInterval(self.propaties.duration), delay:0, options: [.curveEaseInOut], animations: {
-                        
-                        self.cover?.setUnchor(withOffsetX: -self.frame.width, self.propaties.menuOffsetOnNocontentMode)
-                        self.menu?.setOffset(-self.frame.width, self.propaties.menuOffsetOnNocontentMode)
-                        self.content?.setOffset(0)
-                        self.nocontent?.setOffset(-self.frame.width, self.propaties.menuOffsetOnNocontentMode + self.propaties.menuHeight)
-                    }, completion: { _ in
-                        completion()
-                    })
-                }
-                
-            } else {
-                return {
-                    
-                    self.content?.setOffset(self.frame.width, self.menuOffset + self.propaties.menuHeight)
-                    self.menuOffset = -self.propaties.menuHeight
-                    
-                    UIView.animate(withDuration: TimeInterval(self.propaties.duration), delay:0, options: [.curveEaseInOut], animations: {
-                        
-                        self.cover?.setUnchor(withOffsetX: -self.frame.width, self.propaties.menuOffsetOnFixedContentMode)
-                        self.menu?.setOffset(-self.frame.width, self.propaties.menuOffsetOnFixedContentMode)
-                        self.content?.setOffset(0)
-                        self.nocontent?.setOffset(-self.frame.width, self.propaties.menuOffsetOnNocontentMode + self.propaties.menuHeight)
-                    }, completion: { _ in
-                        self.exchangeSubview(at: 0, withSubviewAt: 1)
-                        completion()
-                    })
-                }
-            }*/
         }
         return {}
     }
