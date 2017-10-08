@@ -14,7 +14,7 @@ public enum ContentViewType {
 }
 
 open class ContentView : UIView, FluctuateContentView, FluctuateContentHeaderDelegate {
-    
+
     fileprivate lazy var contentCount: Int = 0
     fileprivate lazy var contentIndex = 0
     fileprivate lazy var contents: [UIView] = []
@@ -47,8 +47,9 @@ open class ContentView : UIView, FluctuateContentView, FluctuateContentHeaderDel
         self.frame.origin = CGPoint(x: -contentSize.width * CGFloat(contentIndex), y: y)
     }
     
-    open func registerContent(content: UIView, type: ContentViewType){
+    open func registerContent(content: UIView, type: ContentViewType, title: String){
         contents.append(content)
+        titles.append(title)
         types.append(type)
         content.frame.origin = CGPoint(x: contentSize.width * CGFloat(contentCount), y: type == .fixed ? 0 : (header?.frame.height)!)
         addSubview(content)
@@ -77,6 +78,7 @@ open class ContentView : UIView, FluctuateContentView, FluctuateContentHeaderDel
         if types[contentIndex] == .full {
             addSubview(self.header!)
             self.header?.frame.origin = CGPoint(x: contentSize.width * CGFloat(pageIndex), y: 0)
+            self.header?.setContentTitle(title: titles[contentIndex])
         } else {
             self.header?.removeFromSuperview()
         }
@@ -85,9 +87,5 @@ open class ContentView : UIView, FluctuateContentView, FluctuateContentHeaderDel
     //Header Delegate
     final public func backButtonTouched(){
         delegate?.backToNoContent()
-    }
-    
-    open func contentTitle() -> String {
-        return titles[contentIndex]
     }
 }

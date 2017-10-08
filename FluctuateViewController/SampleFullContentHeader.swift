@@ -27,5 +27,9 @@ open class SampleFullContentHeader : UIView, FluctuateFullContentHeader {
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
+    
+    public func setContentTitle(title: String){
+        print(title)
+    }
 }
 

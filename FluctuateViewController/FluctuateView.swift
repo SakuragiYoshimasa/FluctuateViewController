@@ -42,7 +42,7 @@ public protocol FluctuateMenuView : class {
 public protocol FluctuateContentView : class {
     func setOffset(_ x: CGFloat, _ y: CGFloat)
     func setOffset(_ y: CGFloat)
-    func registerContent(content: UIView, type: ContentViewType)
+    func registerContent(content: UIView, type: ContentViewType, title: String)
     func registerHeader(header: UIView & FluctuateFullContentHeader)
     func clearContents()
     func show(_ pageIndex: Int)
@@ -50,11 +50,11 @@ public protocol FluctuateContentView : class {
 
 public protocol FluctuateFullContentHeader : class {
     var delegate: FluctuateContentHeaderDelegate? { get set }
+    func setContentTitle(title: String)
 }
 
 public protocol FluctuateContentHeaderDelegate : class {
     func backButtonTouched()
-    func contentTitle() -> String
 }
 
 public protocol FluctuateContentViewDelegate : class {
@@ -184,7 +184,8 @@ open class FluctuateView : UIView {
         content?.registerHeader(header: dataSource!.fullContentHeader())
         for i in 0..<(dataSource!.contentsCount()) {
             content?.registerContent(content: (dataSource?.fluctuateView(self, contentByIndex: i).view)!,
-                                     type: (dataSource?.fluctuateView(self, contentTypeByIndex: i))!)
+                                     type: (dataSource?.fluctuateView(self, contentTypeByIndex: i))!,
+                                     title: (dataSource?.fluctuateView(self, contentTitle: i))!)
         }
         addSubview(content!)
         
