@@ -27,6 +27,7 @@ open class FluctuateViewController: UIViewController, FluctuateViewDataSource, F
     open func menuView() -> MenuView { return MenuView() }
     open func noContentView() -> NoContentView { return NoContentView() }
     open func onStateChage(_ state: FluctuateViewState){ }
+    open func onCotentSelected(_ contentIndex: Int){ }
     open func fullContentHeader() -> UIView & FluctuateFullContentHeader {
         return SampleFullContentHeader(frame: CGRect(x:0, y:0, width: self.view.frame.width, height: 200))
     }

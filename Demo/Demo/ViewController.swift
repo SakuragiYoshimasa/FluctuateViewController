@@ -62,7 +62,11 @@ class ViewController : FluctuateViewController {
     
     // FluctuateViewDelegate
     override func onStateChage(_ state: FluctuateViewState){
-        //print("\(state)")
+        print("\(state)")
+    }
+    
+    override func onCotentSelected(_ contentIndex: Int){
+        print("Selected \(contentIndex)")
     }
 }
 

@@ -63,6 +63,7 @@ public protocol FluctuateContentViewDelegate : class {
 
 public protocol FluctuateViewDelegate : class {
     func onStateChage(_ state: FluctuateViewState)
+    func onCotentSelected(_ contentIndex: Int)
 }
 
 public protocol FluctuateViewDataSource : class {
@@ -234,6 +235,7 @@ extension FluctuateView : FluctuateCoverViewDelegate {
 extension FluctuateView : FluctuateMenuViewDelegate {
     public func selectContent(_ contentIndex: Int) {
         if contentIndex > dataSource!.contentsCount() { return }
+        delegate?.onCotentSelected(contentIndex)
         update(dataSource!.fluctuateView(self, contentTypeByIndex: contentIndex) == .fixed ? .fixedContent : .fullContent, content: contentIndex)
     }
 }
