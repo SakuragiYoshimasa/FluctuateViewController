@@ -203,10 +203,10 @@ extension FluctuateView {
                     self.nocontent?.setOffset(self.menuOffset + self.propaties.menuHeight)
                     self.menu?.setOffset(self.menuOffset)
                     self.cover?.setUnchor(self.menuOffset)
+                    self.content?.setOffset(self.frame.width, 0)
                     
                     UIView.animate(withDuration: TimeInterval(self.propaties.duration), delay:0, options: [.curveEaseInOut], animations: {
                         self.frame.origin = CGPoint(x: 0, y: 0)
-                        self.content?.setOffset(self.frame.width, 0)
                     }, completion: { _ in
                         self.content?.setOffset( 0, self.frame.height)
                         completion()
