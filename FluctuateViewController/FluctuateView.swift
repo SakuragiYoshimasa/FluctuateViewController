@@ -8,75 +8,6 @@
 
 import UIKit
 
-public enum FluctuateViewState {
-    case fullCovered
-    case noContent
-    case fixedContent
-    case fullContent
-}
-
-public protocol FluctuateCoverViewDelegate : class {
-    func coverUp()
-    func coverDown()
-}
-
-public protocol FluctuateCoverView : class {
-    func setUnchor(_ y: CGFloat)
-    func setUnchor(withOffsetX x: CGFloat, _ y: CGFloat)
-}
-
-public protocol FluctuateNoContentView : class {
-    func setOffset(_ x: CGFloat, _ y: CGFloat)
-    func setOffset(_ y: CGFloat)
-}
-
-public protocol FluctuateMenuViewDelegate : class {
-    func selectContent(_ contentIndex: Int)
-}
-
-public protocol FluctuateMenuView : class {
-    func setOffset(_ x: CGFloat, _ y: CGFloat)
-    func recreateMenuViewByContents(dataSource: FluctuateViewDataSource)
-}
-
-public protocol FluctuateContentView : class {
-    func setOffset(_ x: CGFloat, _ y: CGFloat)
-    func setOffset(_ y: CGFloat)
-    func registerContent(content: UIView, type: ContentViewType, title: String)
-    func registerHeader(header: UIView & FluctuateFullContentHeader)
-    func clearContents()
-    func show(_ pageIndex: Int)
-}
-
-public protocol FluctuateFullContentHeader : class {
-    var delegate: FluctuateContentHeaderDelegate? { get set }
-    func setContentTitle(title: String)
-}
-
-public protocol FluctuateContentHeaderDelegate : class {
-    func backButtonTouched()
-}
-
-public protocol FluctuateContentViewDelegate : class {
-    func backToNoContent()
-}
-
-public protocol FluctuateViewDelegate : class {
-    func onStateChage(_ state: FluctuateViewState)
-    func onCotentSelected(_ contentIndex: Int)
-}
-
-public protocol FluctuateViewDataSource : class {
-    func contentsCount() -> Int
-    func fluctuateView(_ fluctuateView: FluctuateView, contentTitle index: Int) -> String
-    func fluctuateView(_ fluctuateView: FluctuateView, contentByIndex index: Int) -> UIViewController
-    func fluctuateView(_ fluctuateView: FluctuateView, contentTypeByIndex index: Int) -> ContentViewType
-    func fullContentHeader() -> UIView & FluctuateFullContentHeader
-    func noContentView() -> NoContentView
-    func coverView() -> CoverView
-    func menuView() -> MenuView
-}
-
 public struct FluctuateViewPropaties {
     public var duration: CGFloat
     public var menuHeight: CGFloat
@@ -116,8 +47,8 @@ open class FluctuateView : UIView {
     open var menu: MenuView?
     open var content: ContentView?
     open var nocontent: NoContentView?
-    fileprivate var menuOffset: CGFloat!
     open var propaties: FluctuateViewPropaties
+    fileprivate var menuOffset: CGFloat!
     
     public convenience init(frame: CGRect, propaties: FluctuateViewPropaties) {
         self.init(frame: frame)
@@ -275,7 +206,7 @@ extension FluctuateView {
                     
                     UIView.animate(withDuration: TimeInterval(self.propaties.duration), delay:0, options: [.curveEaseInOut], animations: {
                         self.frame.origin = CGPoint(x: 0, y: 0)
-                        self.content?.setOffset( self.frame.width, 0)
+                        self.content?.setOffset(self.frame.width, 0)
                     }, completion: { _ in
                         self.content?.setOffset( 0, self.frame.height)
                         completion()

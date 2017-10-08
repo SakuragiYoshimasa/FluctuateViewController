@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		062CBA7E1F8A3BE8006903F8 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 062CBA7D1F8A3BE8006903F8 /* Protocols.swift */; };
 		0655E06E1F77A6A0007DD761 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0655E06D1F77A6A0007DD761 /* AppDelegate.swift */; };
 		0655E0731F77A6A0007DD761 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0655E0711F77A6A0007DD761 /* Main.storyboard */; };
 		0655E0751F77A6A0007DD761 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0655E0741F77A6A0007DD761 /* Assets.xcassets */; };
@@ -43,6 +44,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		062CBA7D1F8A3BE8006903F8 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		0655E06A1F77A6A0007DD761 /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0655E06D1F77A6A0007DD761 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0655E0721F77A6A0007DD761 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -149,6 +151,7 @@
 				06BE5DB81F865758001C5757 /* NoContentView.swift */,
 				0670A00E1F7DE15C00223A37 /* Utility.swift */,
 				06F7FA5C1F88B886007C8E1E /* SampleFullContentHeader.swift */,
+				062CBA7D1F8A3BE8006903F8 /* Protocols.swift */,
 			);
 			name = FluctuateViewController;
 			path = ../FluctuateViewController;
@@ -295,6 +298,7 @@
 				067BAA6E1F79947B00DA7FCA /* ContentView.swift in Sources */,
 				0655E06E1F77A6A0007DD761 /* AppDelegate.swift in Sources */,
 				067BAA751F79948B00DA7FCA /* ViewController.swift in Sources */,
+				062CBA7E1F8A3BE8006903F8 /* Protocols.swift in Sources */,
 				067BAA771F799A5A00DA7FCA /* CustomCoverView.swift in Sources */,
 				067BAA701F79947B00DA7FCA /* FluctuateView.swift in Sources */,
 				067BAA6F1F79947B00DA7FCA /* CoverView.swift in Sources */,
