@@ -13,14 +13,17 @@ public enum ContentViewType {
     case full
 }
 
-open class ContentView : UIView, FluctuateContentView, FluctuateContentHeaderDelegate {
-    
+open class ContentView : UIView, FluctuateContentView, FluctuateContentHeaderDelegate, FullContentHeaderByFixedDelegate {
+
     fileprivate lazy var contentCount: Int = 0
     fileprivate lazy var contentIndex = 0
     fileprivate lazy var contents: [UIView] = []
     fileprivate lazy var types: [ContentViewType] = []
+    fileprivate lazy var titles: [String] = []
     fileprivate lazy var contentSize: CGSize = CGSize(width: 0, height: 0)
+    fileprivate lazy var isFullByFix: Bool = false
     fileprivate var header: (UIView & FluctuateFullContentHeader)?
+    open var headerByFixed: (UIView & FullContentHeaderByFixed)?
     open weak var delegate: FluctuateContentViewDelegate?
     
     override public init(frame: CGRect) {
@@ -46,35 +49,43 @@ open class ContentView : UIView, FluctuateContentView, FluctuateContentHeaderDel
         self.frame.origin = CGPoint(x: -contentSize.width * CGFloat(contentIndex), y: y)
     }
     
-    open func registerContent(content: UIView, type: ContentViewType){
+    final public func registerContent(content: UIView, type: ContentViewType, title: String){
         contents.append(content)
+        titles.append(title)
         types.append(type)
-        content.frame.origin = CGPoint(x: contentSize.width * CGFloat(contentCount), y: 0)
+        content.frame.origin = CGPoint(x: contentSize.width * CGFloat(contentCount), y: type == .fixed ? 0 : (header?.frame.height)!)
         addSubview(content)
         contentCount += 1
         reframe()
     }
     
-    open func registerHeader(header contentHeader: UIView & FluctuateFullContentHeader){
+    final public func registerHeader(header contentHeader: UIView & FluctuateFullContentHeader){
         self.header = contentHeader
         self.header?.delegate = self
     }
     
-    public func clearContents(){
+    open func registerHeaderByFixed(header fullbyfixHeader: UIView & FullContentHeaderByFixed){
+        self.headerByFixed = fullbyfixHeader
+        self.headerByFixed?.delegate = self
+    }
+    
+    final public func clearContents(){
         contentCount = 0
         contentIndex = 0
         contents = []
+        titles = []
         types = []
         reframe()
     }
     
-    public func show(_ pageIndex: Int) {
+    final public func show(_ pageIndex: Int) {
         if pageIndex >= contentCount { return }
         frame.origin = CGPoint(x: -contentSize.width * CGFloat(pageIndex), y: frame.origin.y)
         contentIndex = pageIndex
         if types[contentIndex] == .full {
             addSubview(self.header!)
             self.header?.frame.origin = CGPoint(x: contentSize.width * CGFloat(pageIndex), y: 0)
+            self.header?.setContentTitle(title: titles[contentIndex])
         } else {
             self.header?.removeFromSuperview()
         }
@@ -83,5 +94,10 @@ open class ContentView : UIView, FluctuateContentView, FluctuateContentHeaderDel
     //Header Delegate
     final public func backButtonTouched(){
         delegate?.backToNoContent()
+    }
+    
+    //Header By fixed
+    final public func backButtonTouchedByFixed(){
+        delegate?.backToFixeContentFromFull(contentIndex: contentIndex)
     }
 }

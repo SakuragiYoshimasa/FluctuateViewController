@@ -7,11 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		062CBA7E1F8A3BE8006903F8 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 062CBA7D1F8A3BE8006903F8 /* Protocols.swift */; };
 		0655E06E1F77A6A0007DD761 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0655E06D1F77A6A0007DD761 /* AppDelegate.swift */; };
 		0655E0731F77A6A0007DD761 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0655E0711F77A6A0007DD761 /* Main.storyboard */; };
 		0655E0751F77A6A0007DD761 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0655E0741F77A6A0007DD761 /* Assets.xcassets */; };
 		0655E0781F77A6A0007DD761 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0655E0761F77A6A0007DD761 /* LaunchScreen.storyboard */; };
 		0655E0831F77A6A0007DD761 /* DemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0655E0821F77A6A0007DD761 /* DemoTests.swift */; };
+		0668D3481F8E145D008BB33C /* SampleFullContentHeaderByFixed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0668D3471F8E145D008BB33C /* SampleFullContentHeaderByFixed.swift */; };
 		0670A00F1F7DE15C00223A37 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0670A00E1F7DE15C00223A37 /* Utility.swift */; };
 		067BAA6E1F79947B00DA7FCA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067BAA671F79947B00DA7FCA /* ContentView.swift */; };
 		067BAA6F1F79947B00DA7FCA /* CoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067BAA681F79947B00DA7FCA /* CoverView.swift */; };
@@ -43,6 +45,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		062CBA7D1F8A3BE8006903F8 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		0655E06A1F77A6A0007DD761 /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0655E06D1F77A6A0007DD761 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0655E0721F77A6A0007DD761 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -52,6 +55,7 @@
 		0655E07E1F77A6A0007DD761 /* DemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0655E0821F77A6A0007DD761 /* DemoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoTests.swift; sourceTree = "<group>"; };
 		0655E0841F77A6A0007DD761 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0668D3471F8E145D008BB33C /* SampleFullContentHeaderByFixed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleFullContentHeaderByFixed.swift; sourceTree = "<group>"; };
 		0670A00E1F7DE15C00223A37 /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 		067BAA671F79947B00DA7FCA /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		067BAA681F79947B00DA7FCA /* CoverView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoverView.swift; sourceTree = "<group>"; };
@@ -149,6 +153,8 @@
 				06BE5DB81F865758001C5757 /* NoContentView.swift */,
 				0670A00E1F7DE15C00223A37 /* Utility.swift */,
 				06F7FA5C1F88B886007C8E1E /* SampleFullContentHeader.swift */,
+				0668D3471F8E145D008BB33C /* SampleFullContentHeaderByFixed.swift */,
+				062CBA7D1F8A3BE8006903F8 /* Protocols.swift */,
 			);
 			name = FluctuateViewController;
 			path = ../FluctuateViewController;
@@ -295,7 +301,9 @@
 				067BAA6E1F79947B00DA7FCA /* ContentView.swift in Sources */,
 				0655E06E1F77A6A0007DD761 /* AppDelegate.swift in Sources */,
 				067BAA751F79948B00DA7FCA /* ViewController.swift in Sources */,
+				062CBA7E1F8A3BE8006903F8 /* Protocols.swift in Sources */,
 				067BAA771F799A5A00DA7FCA /* CustomCoverView.swift in Sources */,
+				0668D3481F8E145D008BB33C /* SampleFullContentHeaderByFixed.swift in Sources */,
 				067BAA701F79947B00DA7FCA /* FluctuateView.swift in Sources */,
 				067BAA6F1F79947B00DA7FCA /* CoverView.swift in Sources */,
 			);

@@ -1,15 +1,15 @@
 //
-//  SampleFullContentHeader.swift
+//  SampleFullContentHeaderByFixed.swift
 //  Demo
 //
-//  Created by Yoshimasa Sakuragi on 2017/10/07.
+//  Created by Yoshimasa Sakuragi on 2017/10/11.
 //  Copyright © 2017年 Yoshimasa Sakuragi. All rights reserved.
 //
 
 import UIKit
 
-open class SampleFullContentHeader : UIView, FluctuateFullContentHeader {
-    public var delegate: FluctuateContentHeaderDelegate?
+open class SampleFullContentHeaderByFixed : UIView, FullContentHeaderByFixed {
+    public var delegate: FullContentHeaderByFixedDelegate?
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -21,7 +21,7 @@ open class SampleFullContentHeader : UIView, FluctuateFullContentHeader {
     }
     
     @objc private func touched(){
-        delegate?.backButtonTouched()
+        delegate?.backButtonTouchedByFixed()
     }
     
     required public init?(coder aDecoder: NSCoder) {

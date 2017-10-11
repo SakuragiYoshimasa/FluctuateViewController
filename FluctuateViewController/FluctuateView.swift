@@ -13,66 +13,7 @@ public enum FluctuateViewState {
     case noContent
     case fixedContent
     case fullContent
-}
-
-public protocol FluctuateCoverViewDelegate : class {
-    func coverUp()
-    func coverDown()
-}
-
-public protocol FluctuateCoverView : class {
-    func setUnchor(_ y: CGFloat)
-    func setUnchor(withOffsetX x: CGFloat, _ y: CGFloat)
-}
-
-public protocol FluctuateNoContentView : class {
-    func setOffset(_ x: CGFloat, _ y: CGFloat)
-    func setOffset(_ y: CGFloat)
-}
-
-public protocol FluctuateMenuViewDelegate : class {
-    func selectContent(_ contentIndex: Int)
-}
-
-public protocol FluctuateMenuView : class {
-    func setOffset(_ x: CGFloat, _ y: CGFloat)
-    func recreateMenuViewByContents(dataSource: FluctuateViewDataSource)
-}
-
-public protocol FluctuateContentView : class {
-    func setOffset(_ x: CGFloat, _ y: CGFloat)
-    func setOffset(_ y: CGFloat)
-    func registerContent(content: UIView, type: ContentViewType)
-    func registerHeader(header: UIView & FluctuateFullContentHeader)
-    func clearContents()
-    func show(_ pageIndex: Int)
-}
-
-public protocol FluctuateFullContentHeader : class {
-    var delegate: FluctuateContentHeaderDelegate? { get set }
-}
-
-public protocol FluctuateContentHeaderDelegate : class {
-    func backButtonTouched()
-}
-
-public protocol FluctuateContentViewDelegate : class {
-    func backToNoContent()
-}
-
-public protocol FluctuateViewDelegate : class {
-    func onStateChage(_ state: FluctuateViewState)
-}
-
-public protocol FluctuateViewDataSource : class {
-    func contentsCount() -> Int
-    func fluctuateView(_ fluctuateView: FluctuateView, contentTitle index: Int) -> String
-    func fluctuateView(_ fluctuateView: FluctuateView, contentByIndex index: Int) -> UIViewController
-    func fluctuateView(_ fluctuateView: FluctuateView, contentTypeByIndex index: Int) -> ContentViewType
-    func fullContentHeader() -> UIView & FluctuateFullContentHeader
-    func noContentView() -> NoContentView
-    func coverView() -> CoverView
-    func menuView() -> MenuView
+    case fullByFix
 }
 
 public struct FluctuateViewPropaties {
@@ -114,8 +55,9 @@ open class FluctuateView : UIView {
     open var menu: MenuView?
     open var content: ContentView?
     open var nocontent: NoContentView?
-    fileprivate var menuOffset: CGFloat!
     open var propaties: FluctuateViewPropaties
+    open weak var fullByFixContent: UIView?
+    fileprivate var menuOffset: CGFloat!
     
     public convenience init(frame: CGRect, propaties: FluctuateViewPropaties) {
         self.init(frame: frame)
@@ -181,9 +123,11 @@ open class FluctuateView : UIView {
         content?.setOffset(0, self.frame.height)
         content?.delegate = self
         content?.registerHeader(header: dataSource!.fullContentHeader())
+        content?.registerHeaderByFixed(header: dataSource!.fullContentHeaderByFixed())
         for i in 0..<(dataSource!.contentsCount()) {
             content?.registerContent(content: (dataSource?.fluctuateView(self, contentByIndex: i).view)!,
-                                     type: (dataSource?.fluctuateView(self, contentTypeByIndex: i))!)
+                                     type: (dataSource?.fluctuateView(self, contentTypeByIndex: i))!,
+                                     title: (dataSource?.fluctuateView(self, contentTitle: i))!)
         }
         addSubview(content!)
         
@@ -232,6 +176,7 @@ extension FluctuateView : FluctuateCoverViewDelegate {
 extension FluctuateView : FluctuateMenuViewDelegate {
     public func selectContent(_ contentIndex: Int) {
         if contentIndex > dataSource!.contentsCount() { return }
+        delegate?.onCotentSelected(contentIndex)
         update(dataSource!.fluctuateView(self, contentTypeByIndex: contentIndex) == .fixed ? .fixedContent : .fullContent, content: contentIndex)
     }
 }
@@ -239,6 +184,15 @@ extension FluctuateView : FluctuateMenuViewDelegate {
 extension FluctuateView : FluctuateContentViewDelegate {
     public func backToNoContent() {
         update(.noContent, content: nil)
+    }
+    
+    public func transitionToFullFromFixed(fullView: UIView){
+        self.fullByFixContent = fullView
+        update(.fullByFix, content: nil)
+    }
+    
+    public func backToFixeContentFromFull(contentIndex: Int) {
+        update(.fixedContent, content: contentIndex)
     }
 }
 
@@ -268,10 +222,10 @@ extension FluctuateView {
                     self.nocontent?.setOffset(self.menuOffset + self.propaties.menuHeight)
                     self.menu?.setOffset(self.menuOffset)
                     self.cover?.setUnchor(self.menuOffset)
+                    self.content?.setOffset(self.frame.width, 0)
                     
                     UIView.animate(withDuration: TimeInterval(self.propaties.duration), delay:0, options: [.curveEaseInOut], animations: {
                         self.frame.origin = CGPoint(x: 0, y: 0)
-                        self.content?.setOffset( self.frame.width, 0)
                     }, completion: { _ in
                         self.content?.setOffset( 0, self.frame.height)
                         completion()
@@ -291,7 +245,6 @@ extension FluctuateView {
                     }, completion: { _ in
                         if tempState == .fixedContent {
                             self.exchangeSubview(at: 0, withSubviewAt: 1)
-                            print("exchange")
                         }
                         completion()
                     })
@@ -342,45 +295,14 @@ extension FluctuateView {
                     completion()
                 })
             }
-            /*
-            if prevState != .fixedContent {
-                
-                return {
-                    
-                    self.content?.setOffset(self.frame.width, self.menuOffset + self.propaties.menuHeight)
-                    self.menuOffset = -self.propaties.menuHeight
-                    self.content?.setOffset(self.menuOffset + self.propaties.menuHeight)
-                    
-                    UIView.animate(withDuration: TimeInterval(self.propaties.duration), delay:0, options: [.curveEaseInOut], animations: {
-                        
-                        self.cover?.setUnchor(withOffsetX: -self.frame.width, self.propaties.menuOffsetOnNocontentMode)
-                        self.menu?.setOffset(-self.frame.width, self.propaties.menuOffsetOnNocontentMode)
-                        self.content?.setOffset(0)
-                        self.nocontent?.setOffset(-self.frame.width, self.propaties.menuOffsetOnNocontentMode + self.propaties.menuHeight)
-                    }, completion: { _ in
-                        completion()
-                    })
-                }
-                
-            } else {
-                return {
-                    
-                    self.content?.setOffset(self.frame.width, self.menuOffset + self.propaties.menuHeight)
-                    self.menuOffset = -self.propaties.menuHeight
-                    
-                    UIView.animate(withDuration: TimeInterval(self.propaties.duration), delay:0, options: [.curveEaseInOut], animations: {
-                        
-                        self.cover?.setUnchor(withOffsetX: -self.frame.width, self.propaties.menuOffsetOnFixedContentMode)
-                        self.menu?.setOffset(-self.frame.width, self.propaties.menuOffsetOnFixedContentMode)
-                        self.content?.setOffset(0)
-                        self.nocontent?.setOffset(-self.frame.width, self.propaties.menuOffsetOnNocontentMode + self.propaties.menuHeight)
-                    }, completion: { _ in
-                        self.exchangeSubview(at: 0, withSubviewAt: 1)
-                        completion()
-                    })
-                }
-            }*/
+        case .fullByFix:
+            
+            return {
+                //Add fullByFix as a subview
+                //Show 
+            }
         }
+        
         return {}
     }
 }

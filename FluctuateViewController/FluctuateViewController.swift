@@ -20,14 +20,19 @@ open class FluctuateViewController: UIViewController, FluctuateViewDataSource, F
     }
     
     open func contentsCount() -> Int { return 0 }
-    open func fluctuateView(_ fluctuateView: FluctuateView, contentTitle index: Int) -> String { return "" }
+    open func fluctuateView(_ fluctuateView: FluctuateView, contentTitle index: Int) -> String { return "Title" }
     open func fluctuateView(_ fluctuateView: FluctuateView, contentByIndex index: Int) -> UIViewController { return UIViewController() }
     open func fluctuateView(_ fluctuateView: FluctuateView, contentTypeByIndex index: Int) -> ContentViewType { return .fixed }
     open func coverView() -> CoverView { return CoverView(frame: self.view.frame) }
     open func menuView() -> MenuView { return MenuView() }
     open func noContentView() -> NoContentView { return NoContentView() }
     open func onStateChage(_ state: FluctuateViewState){ }
+    open func onCotentSelected(_ contentIndex: Int){ }
     open func fullContentHeader() -> UIView & FluctuateFullContentHeader {
         return SampleFullContentHeader(frame: CGRect(x:0, y:0, width: self.view.frame.width, height: 200))
+    }
+    
+    open func fullContentHeaderByFixed() -> UIView & FullContentHeaderByFixed {
+        return SampleFullContentHeaderByFixed(frame: CGRect(x:0, y:0, width: self.view.frame.width, height: 200))
     }
 }
