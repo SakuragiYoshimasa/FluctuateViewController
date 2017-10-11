@@ -253,7 +253,7 @@ extension FluctuateView {
             
         case .fixedContent:
             
-            if prevState != .fixedContent {
+            if prevState != .fixedContent && prevState != .fullByFix {
                 
                 return {
                     self.exchangeSubview(at: 0, withSubviewAt: 1)
@@ -277,6 +277,27 @@ extension FluctuateView {
                 }
             }
             
+            if prevState == .fullByFix {
+                
+                return {
+                    
+                    self.frame.origin = CGPoint(x: -self.frame.width, y: 0)
+                    self.menuOffset = self.propaties.menuOffsetOnNocontentMode
+                    self.nocontent?.setOffset(self.menuOffset + self.propaties.menuHeight)
+                    self.menu?.setOffset(self.menuOffset)
+                    self.cover?.setUnchor(self.menuOffset)
+                    self.content?.setOffset(self.frame.width, 0)
+                    self.fullByFixContent?.frame.origin = CGPoint(x: self.frame.width, y: 0)
+                    
+                    UIView.animate(withDuration: TimeInterval(self.propaties.duration), delay:0, options: [.curveEaseInOut], animations: {
+                        self.frame.origin = CGPoint(x: 0, y: 0)
+                    }, completion: { _ in
+                        self.fullByFixContent?.removeFromSuperview()
+                        completion()
+                    })
+                }
+            }
+            
         case .fullContent:
             
             return {
@@ -296,10 +317,24 @@ extension FluctuateView {
                 })
             }
         case .fullByFix:
-            
+            //TODO
             return {
                 //Add fullByFix as a subview
-                //Show 
+                self.addSubview(self.fullByFixContent!)
+                self.fullByFixContent?.sendSubview(toBack: self)
+                self.fullByFixContent?.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height)
+                
+                //Show
+                UIView.animate(withDuration: TimeInterval(self.propaties.duration), delay:0, options: [.curveEaseInOut], animations: {
+                    
+                    self.cover?.setUnchor(withOffsetX: -self.frame.width, self.propaties.menuOffsetOnNocontentMode)
+                    self.menu?.setOffset(-self.frame.width, self.propaties.menuOffsetOnNocontentMode)
+                    self.content?.setOffset(0)
+                    self.nocontent?.setOffset(-self.frame.width, self.propaties.menuOffsetOnNocontentMode + self.propaties.menuHeight)
+                    
+                }, completion: { _ in
+                    completion()
+                })
             }
         }
         
