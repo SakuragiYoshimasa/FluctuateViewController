@@ -31,4 +31,8 @@ open class FluctuateViewController: UIViewController, FluctuateViewDataSource, F
     open func fullContentHeader() -> UIView & FluctuateFullContentHeader {
         return SampleFullContentHeader(frame: CGRect(x:0, y:0, width: self.view.frame.width, height: 200))
     }
+    
+    open func fullContentHeaderByFixed() -> UIView & FullContentHeaderByFixed {
+        return SampleFullContentHeaderByFixed(frame: CGRect(x:0, y:0, width: self.view.frame.width, height: 200))
+    }
 }

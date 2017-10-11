@@ -8,14 +8,6 @@
 
 import UIKit
 
-
-public enum FluctuateViewState {
-    case fullCovered
-    case noContent
-    case fixedContent
-    case fullContent
-}
-
 public protocol FluctuateCoverViewDelegate : class {
     func coverUp()
     func coverDown()
@@ -45,6 +37,7 @@ public protocol FluctuateContentView : class {
     func setOffset(_ y: CGFloat)
     func registerContent(content: UIView, type: ContentViewType, title: String)
     func registerHeader(header: UIView & FluctuateFullContentHeader)
+    func registerHeaderByFixed(header fullbyfixHeader: UIView & FullContentHeaderByFixed)
     func clearContents()
     func show(_ pageIndex: Int)
 }
@@ -54,12 +47,23 @@ public protocol FluctuateFullContentHeader : class {
     func setContentTitle(title: String)
 }
 
+public protocol FullContentHeaderByFixed : class {
+    var delegate: FullContentHeaderByFixedDelegate? { get set }
+    func setContentTitle(title: String)
+}
+
 public protocol FluctuateContentHeaderDelegate : class {
     func backButtonTouched()
 }
 
+public protocol FullContentHeaderByFixedDelegate : class {
+    func backButtonTouchedByFixed()
+}
+
 public protocol FluctuateContentViewDelegate : class {
     func backToNoContent()
+    func transitionToFullFromFixed(fullView: UIView)
+    func backToFixeContentFromFull(contentIndex: Int)
 }
 
 public protocol FluctuateViewDelegate : class {
@@ -73,6 +77,7 @@ public protocol FluctuateViewDataSource : class {
     func fluctuateView(_ fluctuateView: FluctuateView, contentByIndex index: Int) -> UIViewController
     func fluctuateView(_ fluctuateView: FluctuateView, contentTypeByIndex index: Int) -> ContentViewType
     func fullContentHeader() -> UIView & FluctuateFullContentHeader
+    func fullContentHeaderByFixed() -> UIView & FullContentHeaderByFixed
     func noContentView() -> NoContentView
     func coverView() -> CoverView
     func menuView() -> MenuView

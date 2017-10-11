@@ -8,6 +8,14 @@
 
 import UIKit
 
+public enum FluctuateViewState {
+    case fullCovered
+    case noContent
+    case fixedContent
+    case fullContent
+    case fullByFix
+}
+
 public struct FluctuateViewPropaties {
     public var duration: CGFloat
     public var menuHeight: CGFloat
@@ -48,6 +56,7 @@ open class FluctuateView : UIView {
     open var content: ContentView?
     open var nocontent: NoContentView?
     open var propaties: FluctuateViewPropaties
+    open weak var fullByFixContent: UIView?
     fileprivate var menuOffset: CGFloat!
     
     public convenience init(frame: CGRect, propaties: FluctuateViewPropaties) {
@@ -114,6 +123,7 @@ open class FluctuateView : UIView {
         content?.setOffset(0, self.frame.height)
         content?.delegate = self
         content?.registerHeader(header: dataSource!.fullContentHeader())
+        content?.registerHeaderByFixed(header: dataSource!.fullContentHeaderByFixed())
         for i in 0..<(dataSource!.contentsCount()) {
             content?.registerContent(content: (dataSource?.fluctuateView(self, contentByIndex: i).view)!,
                                      type: (dataSource?.fluctuateView(self, contentTypeByIndex: i))!,
@@ -174,6 +184,15 @@ extension FluctuateView : FluctuateMenuViewDelegate {
 extension FluctuateView : FluctuateContentViewDelegate {
     public func backToNoContent() {
         update(.noContent, content: nil)
+    }
+    
+    public func transitionToFullFromFixed(fullView: UIView){
+        self.fullByFixContent = fullView
+        update(.fullByFix, content: nil)
+    }
+    
+    public func backToFixeContentFromFull(contentIndex: Int) {
+        update(.fixedContent, content: contentIndex)
     }
 }
 
@@ -276,7 +295,14 @@ extension FluctuateView {
                     completion()
                 })
             }
+        case .fullByFix:
+            
+            return {
+                //Add fullByFix as a subview
+                //Show 
+            }
         }
+        
         return {}
     }
 }
