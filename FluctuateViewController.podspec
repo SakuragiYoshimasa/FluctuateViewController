@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
 #
 
 s.name         = "FluctuateViewController"
-s.version      = "1.0.9"
+s.version      = "1.1.0"
 s.summary      = "ViewController for a specific situation on iPad"
 
 # This description is used to generate tags and improve search results.

@@ -33,6 +33,9 @@ open class ContentView : UIView, FluctuateContentView, FluctuateContentHeaderDel
  
     fileprivate func reframe(){
         self.frame.size = CGSize(width: contentSize.width * CGFloat(contentCount), height: contentSize.height)
+        for i in 0..<contentCount {
+            contents[i].frame.size = CGSize(width: contentSize.width, height: contents[i].frame.height)
+        }
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -88,6 +91,20 @@ open class ContentView : UIView, FluctuateContentView, FluctuateContentHeaderDel
             self.header?.setContentTitle(title: titles[contentIndex])
         } else {
             self.header?.removeFromSuperview()
+        }
+    }
+    
+    final public func hideOtherContent() {
+        for i in 0..<contentCount {
+            if i != contentIndex {
+                contents[i].isHidden = true
+            }
+        }
+    }
+    
+    final public func showOtherContent() {
+        for i in 0..<contentCount {
+            contents[i].isHidden = false
         }
     }
     
