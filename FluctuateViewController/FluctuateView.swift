@@ -223,6 +223,7 @@ extension FluctuateView {
                     
                     UIView.animate(withDuration: TimeInterval(self.propaties.duration), delay:0, options: [.curveEaseInOut], animations: {
                         self.frame.origin = CGPoint(x: 0, y: 0)
+                        self.content?.setOffset(0 , 0)
                     }, completion: { _ in
                         self.content?.setOffset( 0, self.frame.height)
                         completion()
@@ -260,10 +261,10 @@ extension FluctuateView {
                         
                         UIView.animate(withDuration: TimeInterval(self.propaties.duration), delay:0, options: [.curveEaseInOut], animations: {
                             self.cover?.setUnchor(nextState != .fullContent ? self.propaties.menuOffsetOnFixedContentMode : self.propaties.fullCoveredOffset)
-                            self.menu?.setOffset(self.propaties.menuOffsetOnNocontentMode)
-                            self.content?.setOffset(self.propaties.menuOffsetOnNocontentMode + self.propaties.menuHeight)
+                            self.menu?.setOffset(self.propaties.menuOffsetOnFixedContentMode)
+                            self.content?.setOffset(self.propaties.menuOffsetOnFixedContentMode + self.propaties.menuHeight)
                         }, completion: { _ in
-                            self.nocontent?.setOffset(self.propaties.menuOffsetOnNocontentMode + self.propaties.menuHeight)
+                            self.nocontent?.setOffset(self.propaties.menuOffsetOnFixedContentMode + self.propaties.menuHeight)
                             completion()
                         })
                     })
@@ -276,9 +277,10 @@ extension FluctuateView {
                     
                     UIView.animate(withDuration: TimeInterval(self.propaties.duration), delay:0, options: [.curveEaseInOut], animations: {
                         
-                        self.menu?.setOffset(0 ,self.propaties.menuOffsetOnNocontentMode)
-                        self.cover?.setUnchor(withOffsetX: 0, self.propaties.menuOffsetOnNocontentMode)
+                        self.menu?.setOffset(0 ,self.propaties.menuOffsetOnFixedContentMode)
+                        self.cover?.setUnchor(withOffsetX: 0, self.propaties.menuOffsetOnFixedContentMode)
                         self.content?.setOffset(0, self.propaties.menuOffsetOnFixedContentMode + self.propaties.menuHeight)
+                        self.nocontent?.setOffset(0, self.propaties.menuOffsetOnFixedContentMode + self.propaties.menuHeight)
                         
                     }, completion: { _ in
                         self.fullByFixContent?.removeFromSuperview()
@@ -308,14 +310,15 @@ extension FluctuateView {
             
                 self.addSubview(self.fullByFixContent!)
                 self.fullByFixContent?.sendSubview(toBack: self)
-                self.fullByFixContent?.frame = CGRect(x: self.frame.width, y: 0, width: self.frame.width, height: self.frame.height)
+                self.fullByFixContent?.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height)
                 
                 UIView.animate(withDuration: TimeInterval(self.propaties.duration), delay:0, options: [.curveEaseInOut], animations: {
                     
                     self.cover?.setUnchor(withOffsetX: -self.frame.width, self.propaties.menuOffsetOnNocontentMode)
                     self.menu?.setOffset(-self.frame.width, self.propaties.menuOffsetOnNocontentMode)
                     self.content?.setOffset(-self.frame.width , self.propaties.menuHeight + self.propaties.menuOffsetOnFixedContentMode)
-                    self.fullByFixContent?.frame.origin = CGPoint(x: 0, y: 0)
+                    self.nocontent?.setOffset(-self.frame.width, self.propaties.menuOffsetOnFixedContentMode + self.propaties.menuHeight)
+                    //self.fullByFixContent?.frame.origin = CGPoint(x: 0, y: 0)
                 }, completion: { _ in
                     completion()
                 })
