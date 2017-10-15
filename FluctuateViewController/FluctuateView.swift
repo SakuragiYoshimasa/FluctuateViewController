@@ -92,6 +92,7 @@ open class FluctuateView : UIView {
                 content?.show(contIndex)
                 transition(prev: state, next: nextState, completion: {
                     self.state = nextState
+                    self.delegate?.onStateChage(self.state)
                 })()
             } else {
                 transition(prev: state, next: .noContent, completion: {
@@ -99,6 +100,7 @@ open class FluctuateView : UIView {
                     self.content?.show(contIndex)
                     self.transition(prev: .noContent, next: nextState, completion: {
                         self.state = nextState
+                        self.delegate?.onStateChage(self.state)
                     })()
                 })()
             }
@@ -106,10 +108,9 @@ open class FluctuateView : UIView {
         } else {
             transition(prev: state, next: nextState, completion: {
                 self.state = nextState
+                self.delegate?.onStateChage(self.state)
             })()
         }
-        
-        delegate?.onStateChage(state)
     }
     
     open func updateData(){
