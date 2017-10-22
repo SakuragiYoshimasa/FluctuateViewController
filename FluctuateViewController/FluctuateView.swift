@@ -275,7 +275,7 @@ extension FluctuateView {
             if prevState == .fullByFix {
                 
                 return {
-                    
+                    self.sendSubview(toBack: self.fullByFixContent!)
                     UIView.animate(withDuration: TimeInterval(self.propaties.duration), delay:0, options: [.curveEaseInOut], animations: {
                         
                         self.menu?.setOffset(0 ,self.propaties.menuOffsetOnFixedContentMode)
