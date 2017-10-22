@@ -323,6 +323,7 @@ extension FluctuateView {
                     self.nocontent?.setOffset(-self.frame.width, self.propaties.menuOffsetOnFixedContentMode + self.propaties.menuHeight)
                     //self.fullByFixContent?.frame.origin = CGPoint(x: 0, y: 0)
                 }, completion: { _ in
+                    self.bringSubview(toFront: self.fullByFixContent!)
                     completion()
                 })
             }
