@@ -39,6 +39,7 @@ public protocol FluctuateContentView : class {
     func registerHeader(header: UIView & FluctuateFullContentHeader)
     func registerHeaderByFixed(header fullbyfixHeader: UIView & FullContentHeaderByFixed)
     func clearContents()
+    func resetTitles(titles: [String])
     func show(_ pageIndex: Int)
 }
 

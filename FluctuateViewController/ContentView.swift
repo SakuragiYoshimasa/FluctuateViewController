@@ -81,6 +81,12 @@ open class ContentView : UIView, FluctuateContentView, FluctuateContentHeaderDel
         reframe()
     }
     
+    final public func resetTitles(titles: [String]){
+        if self.titles.count != titles.count { return }
+        self.titles = []
+        self.titles = titles
+    }
+    
     final public func show(_ pageIndex: Int) {
         if pageIndex >= contentCount { return }
         frame.origin = CGPoint(x: -contentSize.width * CGFloat(pageIndex), y: frame.origin.y)
