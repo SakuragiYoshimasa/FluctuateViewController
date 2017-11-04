@@ -48,9 +48,9 @@ open class FluctuateView : UIView {
             self.updateData()
         }
     }
-    
-    fileprivate lazy var state: FluctuateViewState = .fullCovered
+
     open weak var delegate: FluctuateViewDelegate?
+    open var state: FluctuateViewState = .fullCovered
     open var cover: CoverView?
     open var menu: MenuView?
     open var content: ContentView?
