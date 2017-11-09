@@ -12,7 +12,7 @@ extension UIColor {
     static func colorWithHexString (hex:String) -> UIColor {
     
         let cString:String = hex.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines).uppercased()
-        if ((cString as String).characters.count != 6) { return UIColor.gray }
+        if ((cString as String).count != 6) { return UIColor.gray }
     
         let rString = (cString as NSString).substring(with: NSRange(location: 0, length: 2))
         let gString = (cString as NSString).substring(with: NSRange(location: 2, length: 2))

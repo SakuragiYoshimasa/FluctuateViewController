@@ -29,7 +29,7 @@ class CustomMenuView : MenuView {
         }
     }
     
-    func selectContent(_ sender: UIButton) {
+    @objc func selectContent(_ sender: UIButton) {
         select(contentIndex: sender.tag)
     }
 }

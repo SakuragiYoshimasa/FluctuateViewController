@@ -57,6 +57,7 @@ open class FluctuateView : UIView {
     open var nocontent: NoContentView?
     open var propaties: FluctuateViewPropaties
     open weak var fullByFixContent: UIView?
+    private var isAnimation: Bool = false
     
     public convenience init(frame: CGRect, propaties: FluctuateViewPropaties) {
         self.init(frame: frame)
@@ -86,6 +87,14 @@ open class FluctuateView : UIView {
     
     fileprivate func update(_ nextState: FluctuateViewState, content contentIndex: Int?){
         
+        if isAnimation { return }
+        isAnimation = true
+        UIApplication.shared.beginIgnoringInteractionEvents()
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(propaties.duration + 0.4)) {
+            UIApplication.shared.endIgnoringInteractionEvents()
+            self.isAnimation = false
+        }
+        
         if let contIndex = contentIndex {
             
             if nextState != .fullContent {
@@ -93,6 +102,7 @@ open class FluctuateView : UIView {
                 transition(prev: state, next: nextState, completion: {
                     self.state = nextState
                     self.delegate?.onStateChage(self.state)
+                    self.isUserInteractionEnabled = true
                 })()
             } else {
                 transition(prev: state, next: .noContent, completion: {
@@ -101,6 +111,7 @@ open class FluctuateView : UIView {
                     self.transition(prev: .noContent, next: nextState, completion: {
                         self.state = nextState
                         self.delegate?.onStateChage(self.state)
+                        self.isUserInteractionEnabled = true
                     })()
                 })()
             }
@@ -109,6 +120,7 @@ open class FluctuateView : UIView {
             transition(prev: state, next: nextState, completion: {
                 self.state = nextState
                 self.delegate?.onStateChage(self.state)
+                self.isUserInteractionEnabled = true
             })()
         }
     }
